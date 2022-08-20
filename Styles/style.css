@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap');
+
+:root {
+    --main: #08D9D6;
+    --dark: #252A34;
+    --light: #FF2E63;
+    --white: #EAEAEA;
+}
+
+
+* {
+    margin: 0;
+    font-family: 'Roboto', 'Roboto-Light', 'Roboto-Regular', sans-serif;
+}
+
+body {
+    background-image: linear-gradient(75deg, var(--main), var(--dark), var(--light));
+    color: var(--white);
+    line-height: 1.5;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.section {
+    width: max-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--light);
+    border-radius: 1.5rem;
+    padding: 0.5rem;
+}
+
+.section p {
+    font-family: 'Roboto', 'Roboto-Light', sans-serif;
+    font-size: xx-large;
+    max-width: 0 auto 0 auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2.5rem;
+}
+
+form div {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+form input {
+    width: 90%;
+    border-radius: 1.5rem;
+    border: 1px outset var(--light);
+    padding: 1rem;
+    font-size: 1rem;
+    background-color: transparent;
+    color: var(--light);
+    margin: 0 auto 0 auto;
+}
+
+form input:hover {
+    border: 1px solid var(--main);
+}
+
+form button {
+    width: 35%;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    font-size: 0.9rem;
+    background-color: transparent;
+    color: var(--light);
+    border: 1px solid var(--light);
+    margin: 1rem auto 0.25rem auto;
+}
+
+form button:hover {
+    transform: scale(1.1);
+    border: 1px solid var(--main);
+    color: var(--main);
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
