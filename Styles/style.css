@@ -13,6 +13,10 @@
     font-family: 'Roboto', 'Roboto-Light', 'Roboto-Regular', sans-serif;
 }
 
+::selection {
+    background: var(--main);
+}
+
 body {
     background-image: linear-gradient(75deg, var(--main), var(--dark), var(--light));
     color: var(--white);
@@ -74,7 +78,7 @@ form input:hover {
 form button {
     width: 35%;
     border-radius: 1.5rem;
-    padding: 1.5rem;
+    padding: 1rem;
     font-size: 0.9rem;
     background-color: transparent;
     color: var(--light);
@@ -93,4 +97,134 @@ form button:hover {
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+}
+
+.hub {
+    display: grid;
+    grid-template-columns: 0.2fr 1fr;
+    height: 100vh;
+    width: 100%;
+    grid-gap: 0.2em;
+}
+
+
+.user {
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--dark);
+}
+
+.user ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    list-style: none;
+    margin: 00.5rem auto;
+    width: 75%;
+    padding: 0;
+    height: 50vh;
+}
+
+.user li {
+    margin: 1rem auto 1rem auto;
+    width: 100%;
+    text-align: center;
+}
+
+.user a {
+    text-decoration: none;
+    color: var(--light);
+}
+
+.user a:hover {
+    text-decoration: underline;
+    font-size: large;
+    font-weight: bold;
+
+}
+
+#projects {
+    text-align: center;
+    width: 50%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    background-color: transparent;
+    appearance: none;
+    color: var(--light);
+    border-top: 1px solid var(--white);
+    border-left: 1px solid var(--white);
+    border-right: 1px solid var(--white);
+    border-bottom: 1px solid var(--light);
+}
+
+#projects:hover {
+    appearance: var(--dark);
+    font-size: large;
+    font-weight: bold;
+}
+
+#log-out {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+
+    border: 1px solid var(--light);
+    background-color: var(--white);
+    color: var(--light);
+}
+
+#log-out:hover {
+    transform: scale(1.1);
+    border: 1px solid var(--white);
+    background-color: var(--light);
+    color: var(--white);
+}
+
+.task-info {
+    width: 100%;
+    display: grid;
+    grid-template-rows: 0.15fr 1fr;
+    text-align: center;
+}
+
+.bugs {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+
+}
+
+.parts {
+    background-color: rgba(255, 255, 255, 0.4);
+    height: 75vh;
+    width: 25%;
+    border: auto 2.5rem auto 2.5rem;
+    border: 1px dashed var(--main);
+    border-radius: 2.5rem;
+}
+
+.bug-item {
+    width: 75%;
+    margin: 2rem auto;
+    background-color: var(--dark);
+    padding: 0.5rem;
+    border-radius: 1.5rem;
+}
+
+.edit-button {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: 25%;
+    margin: 00.25rem;
+    border: 1px solid var(--light);
+    background-color: var(--white);
+    color: var(--light);
+}
+
+.edit-button:hover {
+    transform: scale(1.1);
+    border: 1px solid var(--white);
+    background-color: var(--light);
+    color: var(--white);
 }
