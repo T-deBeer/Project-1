@@ -8,6 +8,14 @@ class User {
   }
 }
 
+class BugTicket {
+  constructor(title, description, status) {
+    this.title = title;
+    this.description = description;
+    this.status = status;
+  }
+}
+
 let users = [];
 //Loads dummy data into localstorage
 window.onload = function () {
