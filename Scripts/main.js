@@ -9,10 +9,11 @@ class User {
 }
 
 class BugTicket {
-  constructor(title, description, status) {
+  constructor(title, description, status, devs) {
     this.title = title;
     this.description = description;
     this.status = status;
+    this.dev = [];
   }
 }
 
