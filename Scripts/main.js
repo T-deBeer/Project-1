@@ -13,7 +13,7 @@ class BugTicket {
     this.title = title;
     this.description = description;
     this.status = status;
-    this.dev = [];
+    this.devs = [];
   }
 }
 
