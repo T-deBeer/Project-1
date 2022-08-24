@@ -147,7 +147,7 @@ form button:hover {
 
 #projects {
     text-align: center;
-    width: 50%;
+    width: 75%;
     padding: 0.5rem;
     font-size: 0.9rem;
     background-color: transparent;
@@ -168,7 +168,7 @@ form button:hover {
 #log-out {
     border-radius: 0.5rem;
     padding: 0.5rem;
-
+    width: 75%;
     border: 1px solid var(--light);
     background-color: var(--white);
     color: var(--light);
@@ -218,11 +218,28 @@ form button:hover {
     width: 25%;
     margin: 00.25rem;
     border: 1px solid var(--light);
-    background-color: var(--white);
+    background-color: transparent;
     color: var(--light);
 }
 
 .edit-button:hover {
+    transform: scale(1.1);
+    border: 1px solid var(--white);
+    background-color: var(--light);
+    color: var(--white);
+}
+
+#create-ticket {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    width: 75%;
+    margin: 00.25rem;
+    border: 1px solid var(--light);
+    background-color: transparent;
+    color: var(--light);
+}
+
+#create-ticket:hover {
     transform: scale(1.1);
     border: 1px solid var(--white);
     background-color: var(--light);
