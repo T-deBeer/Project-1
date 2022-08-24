@@ -1,8 +1,3 @@
-//Global variable declarations
-let projects = JSON.parse(localStorage.getItem("projects"));
-let title = document.getElementById("view-proj");
-//ends
-
 function allowDrop(ev) {
   ev.preventDefault();
 }
@@ -13,28 +8,34 @@ function drag(ev) {
 
 function drop(ev) {
   ev.preventDefault();
-  let data = ev.dataTransfer.getData("text");
-  console.log(data);
+  var data = ev.dataTransfer.getData("text");
   ev.target.appendChild(document.getElementById(data));
-  for (let i = 0; i < projects.length; i++) {
-    if (title.innerText.includes(projects[i].projName)) {
-      let id = Number(data.substring(data.indexOf("-") + 1));
-      projects[i].bugs[id].status = ev.target.id;
+}
 
-      localStorage.setItem("projects", JSON.stringify(projects));
+function loadProgressBar(states = ['Unresolved', 'Proccessing', 'Resolved', 'Proccessing', 'Resolved']){
+  let u = document.getElementById('progressUnresolved');
+  let p = document.getElementById('progressProccessing');
+  let r = document.getElementById('progressResolved');
+
+  let num1 = 0, num2 = 0, num3 = 0;
+
+  states.forEach(element => {
+    if(element === 'Unresolved')
+    {
+        num1+= ((1/tickets.length) * 240)/1
     }
-    console.log(JSON.parse(localStorage.getItem("projects")));
-  }
+    if(element === 'Proccessing')
+    {
+        num2+= ((1/tickets.length) * 240)/1
+    }
+    if(element === 'Resolved')
+    {
+        num3+= ((1/tickets.length) * 240)/1
+    }
+  });
+
+  u.style.width = `${num1}px`;
+  p.style.width = `${num2}px`;
+  r.style.width = `${num3}px`;
+
 }
-
-function logOut() {
-  if (confirm("Are you sure you want to log out?")) {
-    window.location.href = "../Pages/login-page.html";
-  }
-}
-
-document.getElementById("projects").addEventListener("change", function () {
-  let selection = document.getElementById("projects").value;
-
-  title.innerText = "Viewing " + selection;
-});
