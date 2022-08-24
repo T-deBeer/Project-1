@@ -13,6 +13,30 @@
     <header>
 
     </header>
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <h3 id="modal-title">Bug or Feature Information</h3>
+            <form id="edit-form">
+                <div class="modal-div">
+                    <input id="modal-bug-title" type="text" placeholder="Title" required>
+                </div>
+                <div class="modal-div">
+                    <input id="modal-bug-description" type="text" placeholder="Description" rows="4" multiple required>
+                </div>
+                <div class="modal-div">
+                    <select name="status" id="bug-status">
+                        <option value="unresolved">UNRESOLVED</option>
+                        <option value="proccessing">PROCCESSING</option>
+                        <option value="completed">COMPLETED</option>
+                    </select>
+                </div>
+                <div class="modal-div">
+                    <button type="submit" id="modal-button">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="hub">
         <div class="user">
             <h2>User</h2>
