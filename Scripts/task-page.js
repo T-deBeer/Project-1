@@ -19,7 +19,7 @@ class BugTicket {
 }
 //initialises Progressbar and functions for progressbar
 let Progressbar = {
-  progressbar: document.getElementById('progressbar'),
+  progressbar: document.querySelector('#progressbar'),
   u: document.getElementById('progressUnresolved'),
   p: document.getElementById('progressProccessing'),
   r: document.getElementById('progressResolved'),
@@ -28,26 +28,27 @@ let Progressbar = {
 
   loadprogressBar: function(){
   let states = ['Proccessing','Unresolved', 'Proccessing', 'Resolved', 'Resolved', 'Resolved'];
+  console.log(this.progressbar.style.width);
 
   let num1 = 0, num2 = 0, num3 = 0;
 
   states.forEach(element => {
       if(element === 'Unresolved')
       {
-          num1+= ((1/states.length) * 235)/1
+          num1+= ((1/states.length) * 100)/1
       }
       if(element === 'Proccessing')
       {
-          num2+= ((1/states.length) * 235)/1
+          num2+= ((1/states.length) * 100)/1
       }
       if(element === 'Resolved')
       {
-          num3+= ((1/states.length) * 235)/1
+          num3+= ((1/states.length) * 100)/1
       }
   });
-  this.u.style.width = `${num1}px`;
-  this.p.style.width = `${num2}px`;
-  this.r.style.width = `${num3}px`;
+  this.u.style.width = `${num1}%`;
+  this.p.style.width = `${num2}%`;
+  this.r.style.width = `${num3}%`;
 },
 
 showDetails: function()
