@@ -79,37 +79,68 @@ form input:hover {
     border: 1px solid var(--main);
 }
 
-#progressbar {
+#progressbar{
     display: grid;
     grid-gap: 0rem;
-    grid-template-columns: 33fr 34fr 33fr;
-    grid-template-areas: "U P R";
-    height: 20px;
+    grid-template-columns: repeat(3,auto);
+    grid-template-rows: 20px auto;
+    grid-template-areas: "U P R""M M M";
     background-color: var(--dark);
     margin-top: 20px;
+    width: 240px;
     border-style: solid;
     border-color: var(--dark);
-    width: 240px;
-    border-radius: 1.5rem;
+    border-radius: 13px;
+    transition: 0.5s ;
+    cursor: pointer;
 }
 
-.progress {
-    border-radius: 1.5rem;
+.progress{
+    border-radius: 13px;
+    height: 20px;
+    width: auto;
+    transition: 1s;
 }
 
-#progressUnresolved {
+#progressUnresolved{
     grid-area: U;
     background-color: var(--main);
 }
 
-#progressProccessing {
-    grid-area: U;
+#progressProccessing{
+    grid-area: P;
+    background-color: var(--white);
 }
 
 
-#progressResolved {
+#progressResolved{
     grid-area: R;
     background-color: var(--light);
+}
+
+#menue{
+    transition: 0.5s;
+    color: white;
+    grid-area: M;
+    transition: 1s;
+    margin-top: 10px;
+
+}
+
+#menue div{
+    display: none;
+}
+#menue ul{
+    list-style: none;
+    text-align: left;
+}
+#menue ul li{
+    text-align: left;
+}
+
+#menue p{
+    text-align: left;
+    padding: 10px;
 }
 
 form button {
