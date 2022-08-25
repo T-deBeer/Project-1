@@ -52,22 +52,37 @@
     </div>
     <div class="hub">
         <div class="user">
-            <h2 id="current-user">User</h2>
+            <h2>User</h2>
             <ul>
                 <li><a href="#UserSettings">Settings</a></li>
                 <li><select name="projects" id="projects">
+                        <option value="Project1">Project 1</option>
+                        <option value="Project2">Project 2</option>
+                        <option value="Project3">Project 3</option>
                     </select></li>
-                <li><button type="button" id="create-ticket">Create Ticket</button></li>
-                <li><button type="button" id="log-out" onclick="logOut();">Log out</button></li>
+                    <li>
+                        <h3>Progress</h3>
+                        <div id="progressbar">
+                            <div id = "progressUnresolved" class = "progress"></div>
+                            <div id = "progressProccessing" class = "progress"></div>
+                            <div id = "progressResolved" class = "progress"></div>
+                        </div>
+                    </li>
+                <li><button type="button" id="log-out">LOG OUT</button></li>
             </ul>
         </div>
         <div class="task-info">
             <div>
-                <h1 id="view-proj">VIEWING</h1>
+                <h1 id="view-proj">VIEWING PROJECT 1</h1>
             </div>
             <div class="bugs">
                 <div id="unresolved" class="parts" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <h2>UNRESOLVED</h2>
+                    <div id="bug-1" class="bug-item" draggable="true" ondragstart="drag(event)">
+                        <h3>Bug 1</h3>
+                        <p>Small bug that needs to be fixed.</p>
+                        <button type="button" class="edit-button" id="bug-edit-1">Edit</button>
+                    </div>
                 </div>
                 <div id="proccessing" class="parts" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <h2>PROCCESSING</h2>

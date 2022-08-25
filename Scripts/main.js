@@ -8,14 +8,6 @@ class User {
   }
 }
 
-class Project {
-  constructor(projName, projDevs, bugs) {
-    this.projName = projName;
-    this.projDevs = projDevs;
-    this.bugs = bugs;
-  }
-}
-
 class BugTicket {
   constructor(
     title,
@@ -181,4 +173,3 @@ window.onload = function () {
 
   //task-page neccesities ends
 };
-//ends
