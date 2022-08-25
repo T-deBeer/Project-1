@@ -96,80 +96,191 @@ window.onload = function () {
   //dummy projects section ends
 
   //task-page neccesities
-  let title = document.getElementById("view-proj");
-  let selection = document.getElementById("projects").value;
-  let currentUser = localStorage.getItem("currentUser");
-  let comboBox = document.getElementById("projects");
+  if (document.URL.includes("task-page")) {
+    let title = document.getElementById("view-proj");
+    let selection = document.getElementById("projects").value;
+    let currentUser = localStorage.getItem("currentUser");
+    let comboBox = document.getElementById("projects");
 
-  let projs = JSON.parse(localStorage.getItem("projects"));
+    let projs = JSON.parse(localStorage.getItem("projects"));
 
-  title.innerText = "Viewing " + selection;
-  document.getElementById("current-user").innerText = currentUser;
+    title.innerText = "Viewing " + selection;
+    document.getElementById("current-user").innerText = currentUser;
 
-  for (let i = 0; i < projs.length; i++) {
-    //Goes through all projects in storage
-    for (let j = 0; j < projs[i].projDevs.length; j++) {
-      //Goes through all registered devs in projects
-      if (projs[i].projDevs[j] == currentUser) {
-        //If the current user is a developer on the project
+    for (let i = 0; i < projs.length; i++) {
+      //Goes through all projects in storage
+      for (let j = 0; j < projs[i].projDevs.length; j++) {
+        //Goes through all registered devs in projects
+        if (projs[i].projDevs[j] == currentUser) {
+          //If the current user is a developer on the project
 
-        //add the project to the selection list for the current user
-        let option = document.createElement("option");
-        option.text = projs[i].projName;
-        option.value = projs[i].projName;
-        if (i == 0) {
-          option.selected = true;
-          title.innerText = "Viewing " + option.value;
-        }
-        comboBox.appendChild(option);
-        //ends
-
-        //loads bugs into the fields by status
-        for (let k = 0; k < projs[i].bugs.length; k++) {
-          let section = document.getElementById(projs[i].bugs[k].status);
-          let div = document.createElement("div");
-          let h3 = document.createElement("h3");
-          let p = document.createElement("p");
-          let type = document.createElement("p");
-          let button = document.createElement("button");
-
-          div.id = "bug-" + k;
-          div.draggable = true;
-          div.classList.add("bug-item");
-          div.addEventListener("dragstart", function (ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-          });
-
-          h3.innerText = div.id + ": " + projs[i].bugs[k].title;
-          type.innerText = projs[i].bugs[k].type.toUpperCase();
-          type.style.fontWeight = "bold";
-          p.innerText = projs[i].bugs[k].description;
-
-          button.type = "button";
-          button.classList.add("edit-button");
-          button.id = "bug-edit-" + k;
-          button.innerText = "Edit";
-
-          console.log(new Date(projs[i].bugs[k].dueDate).addDays(-2));
-
-          if (new Date() >= new Date(projs[i].bugs[k].dueDate)) {
-            div.style.border = "0.25rem solid red";
-          } else if (
-            new Date() <= new Date(projs[i].bugs[k].dueDate) &&
-            new Date() >= new Date(projs[i].bugs[k].dueDate).addDays(-2)
-          ) {
-            div.style.border = "0.25rem solid orange";
-          } else {
-            div.style.border = "0.25rem solid lightgreen";
+          //add the project to the selection list for the current user
+          let option = document.createElement("option");
+          option.text = projs[i].projName;
+          option.value = projs[i].projName;
+          if (i == 0) {
+            option.selected = true;
+            title.innerText = "Viewing " + option.value;
           }
+          comboBox.appendChild(option);
+          //ends
 
-          div.append(h3, type, p, button);
-          section.appendChild(div);
+          //loads bugs into the fields by status
+          for (let k = 0; k < projs[i].bugs.length; k++) {
+            let section = document.getElementById(projs[i].bugs[k].status);
+            let div = document.createElement("div");
+            let h3 = document.createElement("h3");
+            let p = document.createElement("p");
+            let type = document.createElement("p");
+            let button = document.createElement("button");
+
+            div.id = "bug-" + k;
+            div.draggable = true;
+            div.classList.add("bug-item");
+            div.addEventListener("dragstart", function (ev) {
+              ev.dataTransfer.setData("text", ev.target.id);
+            });
+
+            h3.innerText = div.id + ": " + projs[i].bugs[k].title;
+            type.innerText = projs[i].bugs[k].type.toUpperCase();
+            type.style.fontWeight = "bold";
+            p.innerText = projs[i].bugs[k].description;
+
+            button.type = "button";
+            button.classList.add("edit-button");
+            button.id = "bug-edit-" + k;
+            button.innerText = "Edit";
+
+            console.log(new Date(projs[i].bugs[k].dueDate).addDays(-2));
+
+            if (new Date() >= new Date(projs[i].bugs[k].dueDate)) {
+              div.style.border = "0.25rem solid red";
+            } else if (
+              new Date() <= new Date(projs[i].bugs[k].dueDate) &&
+              new Date() >= new Date(projs[i].bugs[k].dueDate).addDays(-2)
+            ) {
+              div.style.border = "0.25rem solid orange";
+            } else {
+              div.style.border = "0.25rem solid lightgreen";
+            }
+
+            div.append(h3, type, p, button);
+            section.appendChild(div);
+          }
+          //ends
         }
-        //ends
       }
     }
   }
-
   //task-page neccesities ends
-};
+
+  //admin-hub neccesities
+  if (document.URL.includes("admin-hub")) {
+    let currentUser = localStorage.getItem("currentUser");
+    document.getElementById("current-admin").innerText = currentUser;
+
+    //Loads the table of developers
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+    let devs = [];
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].auth == "developer") {
+        devs.push(users[i]);
+      }
+    }
+
+    for (const dev of devs) {
+      let projCount = 0;
+      let projBugs = 0;
+      let tr = document.createElement("tr");
+      let fullname = document.createElement("td");
+      let username = document.createElement("td");
+      let totalProjects = document.createElement("td");
+      let bugs = document.createElement("td");
+
+      fullname.innerText = dev.firstname + " " + dev.lastname;
+      username.innerText = dev.username;
+      for (let j = 0; j < projects.length; j++) {
+        if (projects[j].projDevs.includes(dev.username)) {
+          projCount++;
+          projBugs += projects[j].bugs.length;
+        }
+      }
+
+      totalProjects.innerText = projCount;
+      bugs.innerText = projBugs;
+
+      tr.append(fullname, username, totalProjects, bugs);
+      document.getElementById("dev-table").appendChild(tr);
+    }
+    //end of data table load
+
+    //loading bugs ticket table
+    for (let project of projects) {
+      for (let bug of project.bugs) {
+        let tr = document.createElement("tr");
+        let title = document.createElement("td");
+        let bugProject = document.createElement("td");
+        let dateCreated = document.createElement("td");
+        let status = document.createElement("td");
+        let dueDate = document.createElement("td");
+
+        title.innerText = bug.title;
+        bugProject.innerText = project.projName;
+        dateCreated.innerText = formatDate(new Date(bug.dateCreated));
+        status.innerText = bug.status.toUpperCase();
+        dueDate.innerText = formatDate(new Date(bug.dueDate));
+
+        tr.append(title, bugProject, status, dateCreated, dueDate);
+        document.getElementById("bug-table").appendChild(tr);
+      }
+    }
+    //bug ticket table ends
+
+    //loading project table
+    for (let project of projects) {
+      let tr = document.createElement("tr");
+      let name = document.createElement("td");
+      let numberOfDevs = document.createElement("td");
+      let numberOfBugs = document.createElement("td");
+      let percentage = document.createElement("td");
+
+      name.innerText = project.projName;
+      numberOfDevs.innerText = project.projDevs.length;
+
+      let count = 0;
+      for (let bug of project.bugs) {
+        if (bug.status == "completed") {
+          count++;
+        }
+      }
+      percentage.innerText =
+        ((count / project.bugs.length) * 100).toFixed(2) + "%";
+
+      numberOfBugs.innerText = project.bugs.length - count;
+
+      tr.append(name, numberOfDevs, numberOfBugs, percentage);
+      document.getElementById("project-table").appendChild(tr);
+    }
+    //loading project table ends
+  }
+
+  //admin-hub neccesities ends
+}; //End of onload
+
+//formats the date to a readable format
+function formatDate(dateEntered) {
+  let month = dateEntered.getMonth() + 1;
+  let day = Number(dateEntered.getDate());
+  let year = dateEntered.getFullYear();
+
+  if (month < 10) {
+    month = "0" + month;
+  }
+
+  if (day < 10) {
+    day = "0" + day;
+  }
+
+  return year + "-" + month + "-" + day;
+}

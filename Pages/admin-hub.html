@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../Styles/style.css">
+    <title>Task Manager - Admin Hub</title>
+</head>
+
+<body>
+    <header>
+
+    </header>
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <h3 id="modal-title">Bug or Feature Information</h3>
+            <form id="edit-form">
+                <div class="modal-div">
+                    <label for="tile">Title:</label>
+                    <input name="title" id="modal-bug-title" type="text" placeholder="Title" required>
+                </div>
+                <div class="modal-div modal-radio">
+                    <label for="bug">BUG</label>
+                    <input id="modal-bug-radio-bug" type="radio" id="bug" value="bug" name="type" required>
+                    <label for="fr">FEATURE REQUEST</label>
+                    <input id="modal-bug-radio-feature-request" type="radio" id="fr" value="feature request" name="type"
+                        onclick="featureReq()" required>
+                </div>
+                <div class="modal-div">
+                    <label for="desc">Description:</label>
+                    <input name="desc" id="modal-bug-description" type="text" placeholder="Description" required>
+                </div>
+                <div class="modal-div">
+                    <label for="dueDate">Due Date:</label>
+                    <input name="dueDate" id="modal-bug-due" type="date" placeholder="Due Date" required>
+                </div>
+                <div class="modal-div">
+                    <select name="status" id="bug-status">
+                        <option value="unresolved">UNRESOLVED</option>
+                        <option value="proccessing">PROCCESSING</option>
+                        <option value="completed">COMPLETED</option>
+                    </select>
+                </div>
+                <div class="modal-div">
+                    <button type="submit" id="modal-button">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="hub">
+        <div class="user">
+            <h2 id="current-admin">User</h2>
+            <ul>
+                <li><a href="#UserSettings">Settings</a></li>
+                <li><a href="#developers-bugs">Developer & Bug Information</a></li>
+                <li><a href="#projects-section">Project Information</a></li>
+                <li><button type="button" id="log-out" onclick="logOut()">Log Out</button></li>
+            </ul>
+        </div>
+        <div class="admin-sections">
+            <div class="devs-bugs" id="developers-bugs">
+                <div class="devs">
+                    <h3>DEVELOPER INFORMATION</h3>
+                    <div class="table-container">
+                        <table id="dev-table">
+                            <tr>
+                                <th>FULL NAME</th>
+                                <th>USERNAME</th>
+                                <th>TOTAL PROJECTS</th>
+                                <th>TOTAL BUGS</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="dev-buttons">
+                        <div class="search">
+                            <input type="text" id="dev-search">
+                            <button>Search</button>
+                        </div>
+                        <div class="filter-buttons">
+                            <button>Sort by Projects</button>
+                            <button>Sort by Bugs</button>
+                            <button>Add a Developer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-bugs">
+                    <h3>TICKET INFORMATION</h3>
+                    <div class="table-container">
+                        <table id="bug-table">
+                            <tr>
+                                <th>TITLE</th>
+                                <th>PROJECT</th>
+                                <th>STATUS</th>
+                                <th>DATE CREATED</th>
+                                <th>DUE DATE</th>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="dev-buttons">
+                        <div class="search">
+                            <input type="text" id="bug-search">
+                            <button>Search</button>
+                        </div>
+                        <div class="filter-buttons">
+                            <button>Show Resolved</button>
+                            <button>Show proccessing</button>
+                            <button>Show Unresolved</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="projects" id="projects-section">
+                <h3>TICKET INFORMATION</h3>
+                <div class="table-container">
+                    <table id="project-table">
+                        <tr>
+                            <th>NAME</th>
+                            <th>NUMBER OF DEVS</th>
+                            <th>NUMBER OF UNRESOLVED BUGS</th>
+                            <th>PERCENTAGE RESOLVED</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="dev-buttons">
+                    <div class="search">
+                        <input type="text" id="project-search">
+                        <button>Search</button>
+                    </div>
+                    <div class="filter-buttons">
+                        <button>Create Project</button>
+                        <button>Sort by Bugs</button>
+                        <button>Sort By Percentage</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="module" src="../Scripts/main.js"></script>
+        <script src="../Scripts/admin-hub.js"></script>
+</body>
+
+</html>
