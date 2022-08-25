@@ -17,23 +17,41 @@ class Project {
 }
 
 class BugTicket {
-  constructor(title, description, status) {
+  constructor(
+    title,
+    description,
+    status,
+    dateCreated,
+    dateResolved,
+    dueDate,
+    type
+  ) {
     this.title = title;
     this.description = description;
     this.status = status;
+    this.dateCreated = dateCreated;
+    this.dateResolved = dateResolved;
+    this.dueDate = dueDate;
+    this.type = type;
   }
 }
 
 //Onload global variables
-let users = JSON.parse(localStorage.getItem("users"));
-let projects = JSON.parse(localStorage.getItem("projects"));
+let users = [];
+let projects = [];
 let bugs = [];
 //ends
 
 //Onload function - responsible for loading localStorage data into HTML elemeents
 window.onload = function () {
+  Date.prototype.addDays = function (days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  };
+
   //dummy users section
-  if (users.length <= 0) {
+  if (JSON.parse(localStorage.getItem("users") || "[]").length <= 0) {
     let user = new User("Administrator", "Profile", "Admin", "1234", "admin");
     users.push(user);
     user = new User("Tiaan", "De Beer", "T-deBeer", "577088", "developer");
@@ -47,21 +65,37 @@ window.onload = function () {
   //dummy users section ends
 
   //dummy projects section
-  if (projects.length <= 0) {
+  if (JSON.parse(localStorage.getItem("projects") || "[]").length <= 0) {
     let devs = ["T-deBeer", "timejunky1"];
     let bug = new BugTicket(
       "Bug 1",
       "Small bug responsible for issues with porting.",
-      "proccessing"
+      "proccessing",
+      "2022/08/24",
+      "",
+      "2022/08/27",
+      "bug"
     );
     bugs.push(bug);
     bug = new BugTicket(
       "Bug 2",
       "Mails not being sent when using the contact form.",
-      "unresolved"
+      "unresolved",
+      "2022/08/24",
+      "",
+      "2022/08/27",
+      "bug"
     );
     bugs.push(bug);
-    bug = new BugTicket("Bug 3", "Div not centered", "completed");
+    bug = new BugTicket(
+      "Bug 3",
+      "Div not centered",
+      "proccessing",
+      "2022/08/22",
+      "",
+      "2022/08/27",
+      "bug"
+    );
     bugs.push(bug);
     let project = new Project("Project 1", devs, bugs);
     projects.push(project);
@@ -77,7 +111,6 @@ window.onload = function () {
 
   let projs = JSON.parse(localStorage.getItem("projects"));
 
-  console.log(projs);
   title.innerText = "Viewing " + selection;
   document.getElementById("current-user").innerText = currentUser;
 
@@ -105,6 +138,7 @@ window.onload = function () {
           let div = document.createElement("div");
           let h3 = document.createElement("h3");
           let p = document.createElement("p");
+          let type = document.createElement("p");
           let button = document.createElement("button");
 
           div.id = "bug-" + k;
@@ -114,7 +148,9 @@ window.onload = function () {
             ev.dataTransfer.setData("text", ev.target.id);
           });
 
-          h3.innerText = projs[i].bugs[k].title;
+          h3.innerText = div.id + ": " + projs[i].bugs[k].title;
+          type.innerText = projs[i].bugs[k].type.toUpperCase();
+          type.style.fontWeight = "bold";
           p.innerText = projs[i].bugs[k].description;
 
           button.type = "button";
@@ -122,7 +158,20 @@ window.onload = function () {
           button.id = "bug-edit-" + k;
           button.innerText = "Edit";
 
-          div.append(h3, p, button);
+          console.log(new Date(projs[i].bugs[k].dueDate).addDays(-2));
+
+          if (new Date() >= new Date(projs[i].bugs[k].dueDate)) {
+            div.style.border = "0.25rem solid red";
+          } else if (
+            new Date() <= new Date(projs[i].bugs[k].dueDate) &&
+            new Date() >= new Date(projs[i].bugs[k].dueDate).addDays(-2)
+          ) {
+            div.style.border = "0.25rem solid orange";
+          } else {
+            div.style.border = "0.25rem solid lightgreen";
+          }
+
+          div.append(h3, type, p, button);
           section.appendChild(div);
         }
         //ends

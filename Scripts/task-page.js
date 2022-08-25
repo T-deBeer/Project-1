@@ -1,8 +1,20 @@
 class BugTicket {
-  constructor(title, description, status) {
+  constructor(
+    title,
+    description,
+    status,
+    dateCreated,
+    dateResolved,
+    dueDate,
+    type
+  ) {
     this.title = title;
     this.description = description;
     this.status = status;
+    this.dateCreated = dateCreated;
+    this.dateResolved = dateResolved;
+    this.dueDate = dueDate;
+    this.type = type;
   }
 }
 
@@ -27,11 +39,31 @@ function drop(ev) {
   for (let i = 0; i < projects.length; i++) {
     if (title.innerText.includes(projects[i].projName)) {
       let id = Number(data.substring(data.indexOf("-") + 1));
-      projects[i].bugs[id].status = ev.target.id;
+      if (ev.target.id == "completed") {
+        if (
+          confirm(
+            "Are you sure you want to resolve this ticket.\n" +
+              projects[i].bugs[id].title,
+            "CONFIRM"
+          )
+        ) {
+          projects[i].bugs[id].status = ev.target.id;
+          projects[i].bugs[id].dateResolved = formatDate(new Date());
+        } else {
+          location.reload();
+        }
+      } else if (ev.target.id == "proccessing") {
+        projects[i].bugs[id].status = ev.target.id;
+        projects[i].bugs[id].dateResolved = "";
+      } else if (ev.target.id == "unresolved") {
+        projects[i].bugs[id].status = ev.target.id;
+        projects[i].bugs[id].dateResolved = "";
+      }
 
       localStorage.setItem("projects", JSON.stringify(projects));
     }
   }
+  console.log("projects", JSON.stringify(projects) || "[]");
 }
 
 function logOut() {
@@ -47,9 +79,29 @@ document.getElementById("projects").addEventListener("change", function () {
 
 document.getElementById("create-ticket").addEventListener("click", function () {
   let modal = document.getElementById("edit-modal");
+  document.getElementById("bug-status").disabled = true;
   document.getElementById("modal-button").innerText = "Create Ticket";
   document.getElementById("modal-title").innerText =
     "Create a Bug- or Feature-Ticket";
+
+  //Set Title text field of modal
+  document.getElementById("modal-bug-title").value = "";
+
+  //Set the dexcription field of modal
+  document.getElementById("modal-bug-description").value = "";
+
+  //Set the due date
+  document.getElementById("modal-bug-due").disabled = true;
+  document.getElementById("modal-bug-due").value = formatDate(
+    new Date().addDays(3)
+  );
+
+  //reset the radio buttons
+  const radioButtons = document.querySelectorAll('input[name="type"]');
+  for (const radioButton of radioButtons) {
+    radioButton.checked = false;
+  }
+
   modal.style.display = "block";
 });
 
@@ -58,6 +110,7 @@ document.getElementById("close-modal").addEventListener("click", function () {
   modal.style.display = "none";
 });
 
+//Formats
 window.addEventListener("click", function (event) {
   projects = JSON.parse(localStorage.getItem("projects"));
   let modal = document.getElementById("edit-modal");
@@ -68,6 +121,11 @@ window.addEventListener("click", function (event) {
     //if the other part of the window is clicked then the modal is closed
     modal.style.display = "none";
   } else if (event.target.id.includes("bug-edit")) {
+    document.getElementById("bug-status").disabled = false;
+    document.getElementById("modal-bug-due").disabled = false;
+    document.getElementById("modal-button").innerText = "Edit";
+    document.getElementById("modal-title").innerText =
+      "Bug or Feature Information";
     //If a edit button is clicked then the modal is opened with the bug ticket info
     for (let i = 0; i < projects.length; i++) {
       if (title.innerText.includes(projects[i].projName)) {
@@ -80,6 +138,12 @@ window.addEventListener("click", function (event) {
         bugId = Number(string);
         //Uses string manipulation to find the id of the bug
         id = i;
+      }
+    }
+    const radioButtons = document.querySelectorAll('input[name="type"]');
+    for (const radioButton of radioButtons) {
+      if (radioButton.value == projects[id].bugs[bugId].type) {
+        radioButton.checked = true;
       }
     }
     //Change button text to Edit instead of create
@@ -97,6 +161,11 @@ window.addEventListener("click", function (event) {
     document.getElementById("bug-status").value =
       projects[id].bugs[bugId].status;
 
+    //Set the due date field of the ticket
+    document.getElementById("modal-bug-due").value = formatDate(
+      new Date(projects[id].bugs[bugId].dueDate)
+    );
+
     //reveals the modal
     modal.style.display = "block";
 
@@ -105,6 +174,7 @@ window.addEventListener("click", function (event) {
   }
 });
 
+//When the modal form is submitted
 document.getElementById("edit-form").addEventListener("submit", function () {
   let button = document.getElementById("modal-button");
 
@@ -123,6 +193,22 @@ document.getElementById("edit-form").addEventListener("submit", function () {
         //Set status
         projects[i].bugs[id].status =
           document.getElementById("bug-status").value;
+        if (projects[i].bugs[id].status == "completed") {
+          projects[i].bugs[id].dateResolved = new Date();
+        }
+
+        //Set due date
+        const radioButtons = document.querySelectorAll('input[name="type"]');
+
+        let selectedType;
+        for (const radioButton of radioButtons) {
+          if (radioButton.checked) {
+            selectedType = radioButton.value;
+          }
+        }
+
+        projects[i].bugs[id].dueDate =
+          document.getElementById("modal-bug-due").value;
 
         //Stores updated bugs
         localStorage.setItem("projects", JSON.stringify(projects));
@@ -131,11 +217,32 @@ document.getElementById("edit-form").addEventListener("submit", function () {
   } else {
     for (let i = 0; i < projects.length; i++) {
       if (title.innerText.includes(projects[i].projName)) {
+        const radioButtons = document.querySelectorAll('input[name="type"]');
+
+        let selectedType;
+        let dueDate;
+        for (const radioButton of radioButtons) {
+          if (radioButton.checked) {
+            selectedType = radioButton.value;
+          }
+        }
+
+        if (selectedType.value == "bug") {
+          dueDate = document.getElementById("modal-bug-due").value;
+        } else {
+          dueDate = new Date().addDays(14);
+          document.getElementById("modal-bug-due").value = dueDate;
+        }
+
         //Creates new ticket with the Title,Description and Status found in the modal
         let ticket = new BugTicket(
           document.getElementById("modal-bug-title").value,
           document.getElementById("modal-bug-description").value,
-          document.getElementById("bug-status").value
+          "unresolved",
+          formatDate(new Date()),
+          "",
+          dueDate,
+          selectedType
         );
 
         projects[i].bugs.push(ticket);
@@ -144,3 +251,35 @@ document.getElementById("edit-form").addEventListener("submit", function () {
     }
   }
 });
+
+//formats the date to a readable format
+function formatDate(dateEntered) {
+  let month = dateEntered.getMonth() + 1;
+  let day = Number(dateEntered.getDate());
+  let year = dateEntered.getFullYear();
+
+  if (month < 10) {
+    month = "0" + month;
+  }
+
+  if (day < 10) {
+    day = "0" + day;
+  }
+
+  return year + "-" + month + "-" + day;
+}
+
+//New method for Date types
+Date.prototype.addDays = function (days) {
+  var date = new Date(this.valueOf());
+  date.setDate(date.getDate() + days);
+  return date;
+};
+
+function featureReq() {
+  if (document.getElementById("modal-button").innerText == "Create Ticket") {
+    dueDate = document.getElementById("modal-bug-due").value = formatDate(
+      new Date().addDays(14)
+    );
+  }
+}
