@@ -251,7 +251,7 @@ form button:hover {
     width: 25%;
     margin: 00.25rem;
     border: 1px solid var(--light);
-    background-color: var(--white);
+    background-color: transparent;
     color: var(--light);
 }
 
