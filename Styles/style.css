@@ -83,7 +83,8 @@ form input:hover {
     grid-template-areas: "U P R""M M M";
     background-color: var(--dark);
     margin-top: 20px;
-    width: 240px;
+    width: auto;
+    height: 20px;
     border-style: solid;
     border-color: var(--dark);
     border-radius: 13px;
@@ -125,6 +126,10 @@ form input:hover {
 
 #menue div{
     display: none;
+}
+
+#menue div h4{
+    color: var(--light);
 }
 #menue ul{
     list-style: none;
