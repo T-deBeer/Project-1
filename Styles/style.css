@@ -75,10 +75,10 @@ form input:hover {
     border: 1px solid var(--main);
 }
 
-#progressbar{
+#progressbar {
     display: grid;
     grid-gap: 0rem;
-    grid-template-columns: 33fr 34fr 33fr ;
+    grid-template-columns: 33fr 34fr 33fr;
     grid-template-areas: "U P R";
     height: 20px;
     background-color: var(--dark);
@@ -89,21 +89,21 @@ form input:hover {
     border-radius: 1.5rem;
 }
 
-.progress{
+.progress {
     border-radius: 1.5rem;
 }
 
-#progressUnresolved{
+#progressUnresolved {
     grid-area: U;
     background-color: var(--main);
 }
 
-#progressProccessing{
+#progressProccessing {
     grid-area: U;
 }
 
 
-#progressResolved{
+#progressResolved {
     grid-area: R;
     background-color: var(--light);
 }
@@ -201,7 +201,7 @@ form button:hover {
 #log-out {
     border-radius: 0.5rem;
     padding: 0.5rem;
-
+    width: 75%;
     border: 1px solid var(--light);
     background-color: var(--white);
     color: var(--light);
@@ -260,8 +260,6 @@ form button:hover {
     border: 1px solid var(--white);
     background-color: var(--light);
     color: var(--white);
-<<<<<<< HEAD
-=======
 }
 
 #create-ticket {
