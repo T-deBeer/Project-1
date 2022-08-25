@@ -28,9 +28,15 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
     e.preventDefault();
   } else {
     e.preventDefault();
-    alert("Welcome: " + users[id].username);
-    localStorage.setItem("currentUser", users[id].username);
-    window.location.href = "../Pages/task-page.html";
+    if (users[id].auth == "admin") {
+      alert("Welcome: " + users[id].username);
+      localStorage.setItem("currentUser", users[id].username);
+      window.location.href = "../Pages/admin-hub.html";
+    } else {
+      alert("Welcome: " + users[id].username);
+      localStorage.setItem("currentUser", users[id].username);
+      window.location.href = "../Pages/task-page.html";
+    }
   }
 });
 
