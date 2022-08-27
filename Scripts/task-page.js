@@ -25,30 +25,91 @@ let Progressbar = {
   r: document.getElementById('progressResolved'),
   menue: document.getElementById('menue'),
   info: document.getElementById('info'),
+  projects: JSON.parse(localStorage.getItem("projects")) ?? 
+    [['DefaultProject', ['Dev1', 'Dev2'], [new BugTicket('DefaultBug1','For Default use only','Unresolved', Date.now(), Date.now(), Date.now() - 1, 'Default1'), 
+    new BugTicket('DefaultBug2','For Default use only','Resolved', Date.now(), Date.now(), Date.now() - 1, 'Default2'),
+    new BugTicket('DefaultBug3','For Default use only','Processing', Date.now(), Date.now(), Date.now() - 1, 'Default3')]]],
+  states: [],
+  devs: [],
+  bugs: [],
+  bugsPast: 0,
+  curProject: '' ?? 'DefaultProject',
+  num1: 0,
+  num2: 0,
+  num3: 0,
+
+  getInfo: function(){
+      this.devs.splice(0);
+      this.bugs.splice(0);
+      this.bugsPast = 0;
+      let nbugs = 0;
+      for(let i = 0; i < this.projects.length; i++) {
+        if(this.projects[i].includes(this.curProject)){
+            for(let j = 0; j < this.projects[i][1].length; j++)
+            {
+                this.devs.push(this.projects[i][1][j]);
+            }
+            for(let j = 0; j < this.projects[i][2].length; j++)
+            {
+                if(!this.bugs.map((bug)=> {return bug.includes(this.projects[i][2][j].type)}).includes(true)){
+                  nbugs = 0;
+                  this.bugs.push(`${this.projects[i][2][j].type}:  ${nbugs+1}`)
+                }
+                else
+                {  
+                  nbugs+=1;
+                  this.bugs[this.bugs.indexOf(`${this.projects[i][2][j].type}:  ${nbugs}`)] = `${this.projects[i][2][j].type}:  ${nbugs+1}`;
+                }
+                states.push(this.projects[i][2][j].status);
+                if(this.projects[i][2][j].dueDate >= Date.now() && this.projects[i][2][j].status !== 'Resolved')
+                {
+                  this.bugsPast += 1;
+                }
+    
+            }
+            break;       
+        }
+    }
+    console.log(this.states,
+      this.devs,
+      this.bugs,
+      this.bugsPast,
+      this.curProject,
+      )
+  },
 
   loadprogressBar: function(){
-  let states = ['Proccessing','Unresolved', 'Proccessing', 'Resolved', 'Resolved', 'Resolved'];
+  this.getInfo();
   console.log(this.progressbar.style.width);
 
-  let num1 = 0, num2 = 0, num3 = 0;
-
-  states.forEach(element => {
-      if(element === 'Unresolved')
-      {
-          num1+= ((1/states.length) * 100)/1
-      }
-      if(element === 'Proccessing')
-      {
-          num2+= ((1/states.length) * 100)/1
-      }
-      if(element === 'Resolved')
-      {
-          num3+= ((1/states.length) * 100)/1
-      }
+  this.num1 = 0, this.num2 = 0, this.num3 = 0;
+  let percentage1 = 0, percentage2 = 0, percentage3 = 0
+  this.states.forEach(element => {
+    switch(element)
+    {
+      case 'Unresolved':
+        this.num1+= 1;
+        percentage1 = ((this.num1/this.states.length) * 100)/1;
+        break;
+      case 'Processing':
+        this.num2+= 1;
+        percentage2 = ((this.num2/this.states.length) * 100)/1;
+        break;
+      case 'Resolved':
+        this.num3+= 1;
+        percentage3 = ((this.num3/this.states.length) * 100)/1;
+        break;
+      default:
+        break;
+    }
   });
-  this.u.style.width = `${num1}%`;
-  this.p.style.width = `${num2}%`;
-  this.r.style.width = `${num3}%`;
+  this.u.style.width = `${percentage1}%`;
+  this.p.style.width = `${percentage2}%`;
+  this.r.style.width = `${percentage3}%`;
+
+  console.log(this.num1,
+    this.num2,
+    this.num3)
 },
 
 showDetails: function()
@@ -73,29 +134,73 @@ hideDetails: function()
 },
 
 showInfo: function(Option){
-  let info = document.getElementById('info');
-  info.style.display = 'block';
+  this.info.style.display = 'block';
   let fallAway = document.getElementById('fallAway');
   fallAway.style.display ='none';
+  let back = document.createElement('h4');
+  if(document.getElementById('back')===null){
+  back.innerHTML = ('<h4 onclick="Progressbar.hideInfo();">Back</h4>');
+  back.id = 'back';
+  this.info.appendChild(back);
+  }
+  let ul = document.createElement('ul');
+  ul.id = 'infoList';
+  ul.style.listStyle = 'none';
+  let li = document.createElement('li');
   
   switch(Option){
-      case 'Option 1':
-        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+      case 'AmountOfBugsPast':
+        ul.innerHTML = 'Summary:'
+        if(this.num1 > 0){
+          li.innerHTML = `Unresolved: ${this.num1}`;
+          ul.appendChild(li);
+        }
+        if(this.num2 > 0){
+          li.innerHTML = `Processing: ${this.num2}`;
+          ul.appendChild(li);
+        }
+        if(this.num3 > 0){
+          li.innerHTML = `Resolved: ${this.num3}`;
+          ul.appendChild(li);
+        }
+        if(this.bugsPast > 0){
+          li.innerHTML = `Bugs Past: ${this.bugsPast}`;
+          ul.appendChild(li);
+        }
+        if(this.bugsPast === 0 && this.num3 === 0 && this.num2 === 0 && this.num1 === 0)
+        {
+          li.innerHTML = 'There are nou bugs in this project';
+          ul.appendChild(li);
+        }
+        this.info.prepend(ul);
+        this.info.appendChild('<h4 onclick="Progressbar.hideInfo();">Back</h4>');
         break;
-      case 'Option 2':
-        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+      case 'ShowDevs':
+        if(this.devs.length > 0){
+          ul.innerHTML = 'Devs:'       
+          this.devs.forEach(dev => {
+            li.innerHTML = `${dev}`;
+            ul.appendChild(li);
+          });
+        }
+        this.info.prepend(ul);
         break;
-      case 'Option 3':
-        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+      case 'ShowBugs':
+        if(this.bugs.length> 0)
+        {
+          ul.innerHTML = 'Bugs:'
+          this.bugs.forEach(bug => {
+          li.innerHTML = `${bug}`;
+          ul.appendChild(li);
+          });
+          this.info.prepend(ul);
+        }
         break;
       case 'Option 4':
-      this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
         break;
       case 'Option 5':
-        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
         break;
       case 'Option 6':
-        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
         break;
       default:
         break;
@@ -103,11 +208,16 @@ showInfo: function(Option){
 },
 
 hideInfo: function(){
-  let paragraph = document.getElementById('info');
-  paragraph.style.display = 'none'
+  this.info.style.display = 'none'
   let fallAway = document.getElementById('fallAway');
   fallAway.style.display ='block';
-  this.info.innerHTML = ''
+  try{
+    let infoList = document.getElementById('infoList');
+    this.info.removeChild(infoList);
+  }
+  catch{
+    console.log('Was trying to remove info but no info was read yet');
+  }
 },
 }
 
