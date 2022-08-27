@@ -25,7 +25,7 @@ let Progressbar = {
   r: document.getElementById('progressResolved'),
   menue: document.getElementById('menue'),
   info: document.getElementById('info'),
-  projects: JSON.parse(localStorage.getItem("projects")) ?? 
+  projects: //JSON.parse(localStorage.getItem("projects")) ?? 
     [['DefaultProject', ['Dev1', 'Dev2'], [new BugTicket('DefaultBug1','For Default use only','Unresolved', Date.now(), Date.now(), Date.now() - 1, 'Default1'), 
     new BugTicket('DefaultBug2','For Default use only','Resolved', Date.now(), Date.now(), Date.now() - 1, 'Default2'),
     new BugTicket('DefaultBug3','For Default use only','Processing', Date.now(), Date.now(), Date.now() - 1, 'Default3')]]],
@@ -33,7 +33,7 @@ let Progressbar = {
   devs: [],
   bugs: [],
   bugsPast: 0,
-  curProject: '' ?? 'DefaultProject',
+  curProject: '',
   num1: 0,
   num2: 0,
   num3: 0,
@@ -41,8 +41,15 @@ let Progressbar = {
   getInfo: function(){
       this.devs.splice(0);
       this.bugs.splice(0);
+      this.states.splice(0);
       this.bugsPast = 0;
       let nbugs = 0;
+
+      this.curProject = (document.getElementById('projects').value!==null)? document.getElementById('projects').value:'DefaultProject';
+      this.curProject = 'DefaultProject';
+      this.projects = [['DefaultProject', ['Dev1', 'Dev2'], [new BugTicket('DefaultBug1','For Default use only','Unresolved', Date.now(), Date.now(), Date.now() - 1, 'Default1'), 
+      new BugTicket('DefaultBug2','For Default use only','Resolved', Date.now(), Date.now(), Date.now() - 1, 'Default2'),
+      new BugTicket('DefaultBug3','For Default use only','Processing', Date.now(), Date.now(), Date.now() - 1, 'Default3')]]];
       for(let i = 0; i < this.projects.length; i++) {
         if(this.projects[i].includes(this.curProject)){
             for(let j = 0; j < this.projects[i][1].length; j++)
@@ -60,7 +67,7 @@ let Progressbar = {
                   nbugs+=1;
                   this.bugs[this.bugs.indexOf(`${this.projects[i][2][j].type}:  ${nbugs}`)] = `${this.projects[i][2][j].type}:  ${nbugs+1}`;
                 }
-                states.push(this.projects[i][2][j].status);
+                this.states.push(this.projects[i][2][j].status);
                 if(this.projects[i][2][j].dueDate >= Date.now() && this.projects[i][2][j].status !== 'Resolved')
                 {
                   this.bugsPast += 1;
@@ -81,8 +88,9 @@ let Progressbar = {
   loadprogressBar: function(){
   this.getInfo();
   console.log(this.progressbar.style.width);
-
-  this.num1 = 0, this.num2 = 0, this.num3 = 0;
+  this.num1 = 0;
+  this.num2 = 0; 
+  this.num3 = 0;
   let percentage1 = 0, percentage2 = 0, percentage3 = 0
   this.states.forEach(element => {
     switch(element)
@@ -114,6 +122,7 @@ let Progressbar = {
 
 showDetails: function()
 {
+  this.loadprogressBar();
   this.u.style.opacity = '0.2';
   this.p.style.opacity = '0.2';
   this.r.style.opacity = '0.2';
@@ -130,7 +139,6 @@ hideDetails: function()
   this.r.style.opacity = '1';
   
   this.hideInfo();
-  this.loadprogressBar();
 },
 
 showInfo: function(Option){
@@ -139,62 +147,65 @@ showInfo: function(Option){
   fallAway.style.display ='none';
   let back = document.createElement('h4');
   if(document.getElementById('back')===null){
-  back.innerHTML = ('<h4 onclick="Progressbar.hideInfo();">Back</h4>');
-  back.id = 'back';
-  this.info.appendChild(back);
+    back.innerHTML = ('<h4 onclick="Progressbar.hideInfo();">Back</h4>');
+    back.id = 'back';
+    this.info.appendChild(back);
   }
   let ul = document.createElement('ul');
+  ul.style.height = 'auto';
   ul.id = 'infoList';
   ul.style.listStyle = 'none';
-  let li = document.createElement('li');
+  let li;
   
   switch(Option){
-      case 'AmountOfBugsPast':
+      case 'Summary':
         ul.innerHTML = 'Summary:'
-        if(this.num1 > 0){
-          li.innerHTML = `Unresolved: ${this.num1}`;
-          ul.appendChild(li);
-        }
-        if(this.num2 > 0){
-          li.innerHTML = `Processing: ${this.num2}`;
-          ul.appendChild(li);
-        }
-        if(this.num3 > 0){
-          li.innerHTML = `Resolved: ${this.num3}`;
-          ul.appendChild(li);
-        }
-        if(this.bugsPast > 0){
-          li.innerHTML = `Bugs Past: ${this.bugsPast}`;
-          ul.appendChild(li);
-        }
-        if(this.bugsPast === 0 && this.num3 === 0 && this.num2 === 0 && this.num1 === 0)
-        {
-          li.innerHTML = 'There are nou bugs in this project';
-          ul.appendChild(li);
-        }
+        li = document.createElement('li');
+        li.innerHTML = `Unresolved: ${this.num1}`;
+        ul.appendChild(li);
+        li = document.createElement('li');
+        li.innerHTML = `Processing: ${this.num2}`;
+        ul.appendChild(li);
+        li = document.createElement('li');
+        li.innerHTML = `Resolved: ${this.num3}`;
+        ul.appendChild(li);
+        li = document.createElement('li');
+        li.innerHTML = `Bugs overdue: ${this.bugsPast}`;
+        ul.appendChild(li);
         this.info.prepend(ul);
-        this.info.appendChild('<h4 onclick="Progressbar.hideInfo();">Back</h4>');
         break;
       case 'ShowDevs':
         if(this.devs.length > 0){
           ul.innerHTML = 'Devs:'       
           this.devs.forEach(dev => {
+            li = document.createElement('li');
             li.innerHTML = `${dev}`;
             ul.appendChild(li);
           });
         }
-        this.info.prepend(ul);
+        if(this.devs.length===0)
+        {
+          li.innerHTML = 'There are no devs in this project';
+          ul.appendChild(li);
+        }
+          this.info.prepend(ul);        
         break;
       case 'ShowBugs':
         if(this.bugs.length> 0)
         {
           ul.innerHTML = 'Bugs:'
           this.bugs.forEach(bug => {
+          li = document.createElement('li');
           li.innerHTML = `${bug}`;
           ul.appendChild(li);
           });
-          this.info.prepend(ul);
         }
+        if(this.bugs.length===0)
+        {
+          li.innerHTML = 'There are no Bugs in this project';
+          ul.appendChild(li);
+        }
+        this.info.prepend(ul);
         break;
       case 'Option 4':
         break;
@@ -216,7 +227,6 @@ hideInfo: function(){
     this.info.removeChild(infoList);
   }
   catch{
-    console.log('Was trying to remove info but no info was read yet');
   }
 },
 }
