@@ -25,10 +25,7 @@ let Progressbar = {
   r: document.getElementById('progressResolved'),
   menue: document.getElementById('menue'),
   info: document.getElementById('info'),
-  projects: //JSON.parse(localStorage.getItem("projects")) ?? 
-    [['DefaultProject', ['Dev1', 'Dev2'], [new BugTicket('DefaultBug1','For Default use only','Unresolved', Date.now(), Date.now(), Date.now() - 1, 'Default1'), 
-    new BugTicket('DefaultBug2','For Default use only','Resolved', Date.now(), Date.now(), Date.now() - 1, 'Default2'),
-    new BugTicket('DefaultBug3','For Default use only','Processing', Date.now(), Date.now(), Date.now() - 1, 'Default3')]]],
+  projects: JSON.parse(localStorage.getItem("projects")),
   states: [],
   devs: [],
   bugs: [],
@@ -44,12 +41,20 @@ let Progressbar = {
       this.states.splice(0);
       this.bugsPast = 0;
       let nbugs = 0;
-
-      this.curProject = (document.getElementById('projects').value!==null)? document.getElementById('projects').value:'DefaultProject';
+      try {
+        this.curProject = document.getElementById('projects').value ?? 'DefaultProject';
+      }
+      catch{
+        
+      }
       this.curProject = 'DefaultProject';
-      this.projects = [['DefaultProject', ['Dev1', 'Dev2'], [new BugTicket('DefaultBug1','For Default use only','Unresolved', Date.now(), Date.now(), Date.now() - 1, 'Default1'), 
-      new BugTicket('DefaultBug2','For Default use only','Resolved', Date.now(), Date.now(), Date.now() - 1, 'Default2'),
-      new BugTicket('DefaultBug3','For Default use only','Processing', Date.now(), Date.now(), Date.now() - 1, 'Default3')]]];
+      if(this.projects === null){
+        console.log('No project selected: Showing default Project.')
+        this.projects = [['DefaultProject', ['Dev1', 'Dev2'], [new BugTicket('DefaultBug1','For Default use only','Unresolved', Date.now(), Date.now(), Date.now() - 1, 'Default1'), 
+        new BugTicket('DefaultBug2','For Default use only','Resolved', Date.now(), Date.now(), Date.now() - 1, 'Default2'),
+        new BugTicket('DefaultBug3','For Default use only','Processing', Date.now(), Date.now(), Date.now() - 1, 'Default3')]]]
+        this.curProject = 'DefaultProject';
+      }
       for(let i = 0; i < this.projects.length; i++) {
         if(this.projects[i].includes(this.curProject)){
             for(let j = 0; j < this.projects[i][1].length; j++)
@@ -211,7 +216,18 @@ showInfo: function(Option){
         break;
       case 'Option 5':
         break;
-      case 'Option 6':
+      case 'ShowContributers':
+        ul.innerHTML = 'Contributers:'
+        li = document.createElement('li');
+        li.innerHTML = 'Jacobus gerhardus Lotter 578559';
+        ul.appendChild(li);
+        li = document.createElement('li');
+        li.innerHTML = 'Stephanus Jacobus Mathee 578381';
+        ul.appendChild(li);
+        li = document.createElement('li');
+        li.innerHTML = 'Tiaan De Beer 577088';
+        ul.appendChild(li);
+        this.info.prepend(ul);
         break;
       default:
         break;
