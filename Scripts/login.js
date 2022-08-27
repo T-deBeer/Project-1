@@ -40,8 +40,25 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
   }
 });
 
-function createNewUser() {
-  let username = document.getElementById("user").value;
-  let password = document.getElementById("pass").value;
-  let confirmPassword = document.getElementById("conf-pass").value;
-}
+
+  document.getElementById("form").addEventListener("submit", function (e) {
+    let username = document.getElementById("user").value;
+    let name = document.getElementById("name").value;
+    let surname = document.getElementById("surname").value;
+    let password = document.getElementById("pass").value;
+    let confirmPassword = document.getElementById("conf-pass").value;
+
+    if (confirmPassword==password)
+  {
+    users.push(new User(name,surname,username, password));
+    e.preventDefault();
+  }
+  else{
+    message.style.color = "red";
+    message.innerText = "Passwords do not match";
+    confirmPassword.innerText = "";
+    password.innerText = "";
+  }
+  });
+ 
+

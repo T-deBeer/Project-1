@@ -79,12 +79,9 @@ form input:hover {
     border: 1px solid var(--main);
 }
 
-#progressbar {
-    display: grid;
+#progressbar{
+
     grid-gap: 0rem;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: 20px auto;
-    grid-template-areas: "U P R""M M M";
     background-color: var(--dark);
     margin-top: 20px;
     width: auto;
@@ -92,31 +89,41 @@ form input:hover {
     border-style: solid;
     border-color: var(--dark);
     border-radius: 13px;
-    transition: 0.5s;
+    transition: 0.5s ;
     cursor: pointer;
 }
 
-.progress {
+#progress{
+    border-radius: 13px;
+    height: 20px;
+    width: auto;
+    text-align: left;
+    padding: 0;
+}
+
+.progress{
     border-radius: 13px;
     height: 20px;
     width: auto;
     transition: 1s;
+    display: inline-flex;
 }
 
-#progressUnresolved {
-    grid-area: U;
+
+
+#progressUnresolved{
     background-color: var(--main);
 }
 
-#progressProccessing {
-    grid-area: P;
+#progressProccessing{
     background-color: var(--white);
+    margin-left: -4px;
 }
 
 
-#progressResolved {
-    grid-area: R;
+#progressResolved{
     background-color: var(--light);
+    margin-left: -4px;
 }
 
 #menue {
@@ -125,6 +132,7 @@ form input:hover {
     grid-area: M;
     transition: 1s;
     margin-top: 10px;
+    display: none;
 
 }
 

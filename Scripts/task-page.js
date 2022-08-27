@@ -19,34 +19,36 @@ class BugTicket {
 }
 //initialises Progressbar and functions for progressbar
 let Progressbar = {
-  progressbar: document.getElementById('progressbar'),
+  progressbar: document.querySelector('#progressbar'),
   u: document.getElementById('progressUnresolved'),
   p: document.getElementById('progressProccessing'),
   r: document.getElementById('progressResolved'),
   menue: document.getElementById('menue'),
+  info: document.getElementById('info'),
 
   loadprogressBar: function(){
   let states = ['Proccessing','Unresolved', 'Proccessing', 'Resolved', 'Resolved', 'Resolved'];
+  console.log(this.progressbar.style.width);
 
   let num1 = 0, num2 = 0, num3 = 0;
 
   states.forEach(element => {
       if(element === 'Unresolved')
       {
-          num1+= ((1/states.length) * 235)/1
+          num1+= ((1/states.length) * 100)/1
       }
       if(element === 'Proccessing')
       {
-          num2+= ((1/states.length) * 235)/1
+          num2+= ((1/states.length) * 100)/1
       }
       if(element === 'Resolved')
       {
-          num3+= ((1/states.length) * 235)/1
+          num3+= ((1/states.length) * 100)/1
       }
   });
-  this.u.style.width = `${num1}px`;
-  this.p.style.width = `${num2}px`;
-  this.r.style.width = `${num3}px`;
+  this.u.style.width = `${num1}%`;
+  this.p.style.width = `${num2}%`;
+  this.r.style.width = `${num3}%`;
 },
 
 showDetails: function()
@@ -56,38 +58,57 @@ showDetails: function()
   this.r.style.opacity = '0.2';
   this.progressbar.style.height = "500px";
   this.menue.style.display = "block";
-
-  this.loadprogressBar();
 },
 
 hideDetails: function()
 {
   this.progressbar.style.height = "20px";
-  let u = document.getElementById('progressUnresolved');
-  let p = document.getElementById('progressProccessing');
-  let r = document.getElementById('progressResolved');
-  let menue = document.getElementById('menue');
-  menue.style.display = "none";
+  this.menue.style.display = "none";
   this.u.style.opacity = '1';
   this.p.style.opacity = '1';
   this.r.style.opacity = '1';
   
   this.hideInfo();
+  this.loadprogressBar();
 },
 
-showInfo: function(){
-  let paragraph = document.getElementById('paragraph');
-  paragraph.style.display = 'block';
+showInfo: function(Option){
+  let info = document.getElementById('info');
+  info.style.display = 'block';
   let fallAway = document.getElementById('fallAway');
-  fallAway.style.display ='none'
+  fallAway.style.display ='none';
+  
+  switch(Option){
+      case 'Option 1':
+        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+        break;
+      case 'Option 2':
+        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+        break;
+      case 'Option 3':
+        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+        break;
+      case 'Option 4':
+      this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+        break;
+      case 'Option 5':
+        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+        break;
+      case 'Option 6':
+        this.info.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+        break;
+      default:
+        break;
+  }
 },
 
 hideInfo: function(){
-  let paragraph = document.getElementById('paragraph');
+  let paragraph = document.getElementById('info');
   paragraph.style.display = 'none'
   let fallAway = document.getElementById('fallAway');
   fallAway.style.display ='block';
-}
+  this.info.innerHTML = ''
+},
 }
 
 //Global variable declarations
