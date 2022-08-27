@@ -17,7 +17,7 @@
         <div class="modal-content">
             <span class="close" id="close-modal">&times;</span>
             <h3 id="modal-title">Bug or Feature Information</h3>
-            <form id="edit-form">
+            <form id="add-dev-form">
                 <div class="modal-div">
                     <label for="tile">Title:</label>
                     <input name="title" id="modal-bug-title" type="text" placeholder="Title" required>
@@ -77,11 +77,11 @@
                     <div class="dev-buttons">
                         <div class="search">
                             <input type="text" id="dev-search">
-                            <button>Search</button>
+                            <button onclick="devSearch()">Search</button>
                         </div>
                         <div class="filter-buttons">
-                            <button>Sort by Projects</button>
-                            <button>Sort by Bugs</button>
+                            <button onclick="sortByBugs()">Sort by Bugs</button>
+                            <button onclick="sortByProjects()">Sort by Projects</button>
                             <button>Add a Developer</button>
                         </div>
                     </div>
@@ -103,12 +103,13 @@
                     <div class="dev-buttons">
                         <div class="search">
                             <input type="text" id="bug-search">
-                            <button>Search</button>
+                            <button onclick="bugSearch()">Search</button>
                         </div>
                         <div class="filter-buttons">
-                            <button>Show Resolved</button>
-                            <button>Show proccessing</button>
-                            <button>Show Unresolved</button>
+                            <button onclick="showResolved()">Show Resolved</button>
+                            <button onclick="showProcessing()">Show proccessing</button>
+                            <button onclick="showUnresolved()">Show Unresolved</button>
+                            <button onclick="showAllBugs()">Show All</button>
                         </div>
                     </div>
                 </div>
@@ -119,7 +120,7 @@
                     <table id="project-table">
                         <tr>
                             <th>NAME</th>
-                            <th>NUMBER OF DEVS</th>
+                            <th>DEVELOPERS</th>
                             <th>NUMBER OF UNRESOLVED BUGS</th>
                             <th>PERCENTAGE RESOLVED</th>
                         </tr>

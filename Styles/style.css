@@ -79,10 +79,10 @@ form input:hover {
     border: 1px solid var(--main);
 }
 
-#progressbar{
+#progressbar {
     display: grid;
     grid-gap: 0rem;
-    grid-template-columns: repeat(3,auto);
+    grid-template-columns: repeat(3, auto);
     grid-template-rows: 20px auto;
     grid-template-areas: "U P R""M M M";
     background-color: var(--dark);
@@ -92,34 +92,34 @@ form input:hover {
     border-style: solid;
     border-color: var(--dark);
     border-radius: 13px;
-    transition: 0.5s ;
+    transition: 0.5s;
     cursor: pointer;
 }
 
-.progress{
+.progress {
     border-radius: 13px;
     height: 20px;
     width: auto;
     transition: 1s;
 }
 
-#progressUnresolved{
+#progressUnresolved {
     grid-area: U;
     background-color: var(--main);
 }
 
-#progressProccessing{
+#progressProccessing {
     grid-area: P;
     background-color: var(--white);
 }
 
 
-#progressResolved{
+#progressResolved {
     grid-area: R;
     background-color: var(--light);
 }
 
-#menue{
+#menue {
     transition: 0.5s;
     color: white;
     grid-area: M;
@@ -128,22 +128,24 @@ form input:hover {
 
 }
 
-#menue div{
+#menue div {
     display: none;
 }
 
-#menue div h4{
+#menue div h4 {
     color: var(--light);
 }
-#menue ul{
+
+#menue ul {
     list-style: none;
     text-align: left;
 }
-#menue ul li{
+
+#menue ul li {
     text-align: left;
 }
 
-#menue p{
+#menue p {
     text-align: left;
     padding: 10px;
 }
@@ -483,6 +485,7 @@ form button:hover {
     border: 1px solid var(--light);
     background-color: var(--light);
     color: rgba(255, 255, 255, 0.9);
+    border: 0.1em solid rgba(255, 255, 255, 0.7);
 }
 
 .filter-buttons button:hover,
@@ -514,7 +517,8 @@ table {
     border-radius: 0.5rem;
     color: var(--dark);
     width: 90%;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: var(--dark);
+    color: var(--white);
     border: 0.25rem solid var(--light);
     padding: 0.25rem;
 }
@@ -529,6 +533,7 @@ table {
 th {
     padding: 1rem;
     color: var(--light);
+
 
 }
 

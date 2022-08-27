@@ -183,6 +183,7 @@ window.onload = function () {
     let users = JSON.parse(localStorage.getItem("users") || "[]");
     let projects = JSON.parse(localStorage.getItem("projects") || "[]");
     let devs = [];
+
     for (let i = 0; i < users.length; i++) {
       if (users[i].auth == "developer") {
         devs.push(users[i]);
@@ -232,6 +233,16 @@ window.onload = function () {
         dueDate.innerText = formatDate(new Date(bug.dueDate));
 
         tr.append(title, bugProject, status, dateCreated, dueDate);
+        if (new Date() >= new Date(bug.dueDate)) {
+          tr.style.color = "red";
+        } else if (
+          new Date() <= new Date(bug.dueDate) &&
+          new Date() >= new Date(bug.dueDate).addDays(-2)
+        ) {
+          tr.style.color = "orange";
+        } else {
+          tr.style.color = "lightgreen";
+        }
         document.getElementById("bug-table").appendChild(tr);
       }
     }
@@ -246,7 +257,16 @@ window.onload = function () {
       let percentage = document.createElement("td");
 
       name.innerText = project.projName;
-      numberOfDevs.innerText = project.projDevs.length;
+
+      for (let dev of project.projDevs) {
+        for (let user of users) {
+          console.log(user.username == dev);
+          if (user.username == dev) {
+            numberOfDevs.innerHTML +=
+              user.firstname + " " + user.lastname + "<br>";
+          }
+        }
+      }
 
       let count = 0;
       for (let bug of project.bugs) {
