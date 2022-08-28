@@ -52,7 +52,7 @@ let Progressbar = {
             }
             for(let j = 0; j < this.projects[i].bugs.length; j++)
             {
-                if(!this.bugs.map((bug)=> {return bug.includes(this.projects[i][2][j].type)}).includes(true)){
+                if(!this.bugs.map((bug)=> {return bug.includes(this.projects[i].bugs[j].type)}).includes(true)){
                   nbugs = 0;
                   this.bugs.push(`${this.projects[i].bugs[j].type}:  ${nbugs+1}`)
                 }
@@ -112,44 +112,44 @@ let Progressbar = {
   console.log(this.num1,
     this.num2,
     this.num3)
-},
+  },
 
-showDetails: function()
-{
-  this.loadprogressBar();
-  this.u.style.opacity = '0.2';
-  this.p.style.opacity = '0.2';
-  this.r.style.opacity = '0.2';
-  this.progressbar.style.height = "500px";
-  this.menue.style.display = "block";
-},
+  showDetails: function()
+  {
+    this.loadprogressBar();
+    this.u.style.opacity = '0.2';
+    this.p.style.opacity = '0.2';
+    this.r.style.opacity = '0.2';
+    this.progressbar.style.height = "500px";
+    this.menue.style.display = "block";
+  },
 
-hideDetails: function()
-{
-  this.progressbar.style.height = "20px";
-  this.menue.style.display = "none";
-  this.u.style.opacity = '1';
-  this.p.style.opacity = '1';
-  this.r.style.opacity = '1';
+  hideDetails: function()
+  {
+    this.progressbar.style.height = "20px";
+    this.menue.style.display = "none";
+    this.u.style.opacity = '1';
+    this.p.style.opacity = '1';
+    this.r.style.opacity = '1';
   
-  this.hideInfo();
-},
+    this.hideInfo();
+  },
 
-showInfo: function(Option){
-  this.info.style.display = 'block';
-  let fallAway = document.getElementById('fallAway');
-  fallAway.style.display ='none';
-  let back = document.createElement('h4');
-  if(document.getElementById('back')===null){
-    back.innerHTML = ('<h4 onclick="Progressbar.hideInfo();">Back</h4>');
-    back.id = 'back';
-    this.info.appendChild(back);
-  }
-  let ul = document.createElement('ul');
-  ul.style.height = 'auto';
-  ul.id = 'infoList';
-  ul.style.listStyle = 'none';
-  let li;
+  showInfo: function(Option){
+    this.info.style.display = 'block';
+    let fallAway = document.getElementById('fallAway');
+    fallAway.style.display ='none';
+    let back = document.createElement('h4');
+    if(document.getElementById('back')===null){
+      back.innerHTML = ('<h4 onclick="Progressbar.hideInfo();">Back</h4>');
+      back.id = 'back';
+      this.info.appendChild(back);
+    }
+    let ul = document.createElement('ul');
+    ul.style.height = 'auto';
+    ul.id = 'infoList';
+    ul.style.listStyle = 'none';
+    let li;
   
   switch(Option){
       case 'Summary':
@@ -223,20 +223,20 @@ showInfo: function(Option){
         break;
       default:
         break;
-  }
-},
+    }
+  },
 
-hideInfo: function(){
-  this.info.style.display = 'none'
-  let fallAway = document.getElementById('fallAway');
-  fallAway.style.display ='block';
-  try{
-    let infoList = document.getElementById('infoList');
-    this.info.removeChild(infoList);
-  }
-  catch{
-  }
-},
+  hideInfo: function(){
+    this.info.style.display = 'none'
+    let fallAway = document.getElementById('fallAway');
+    fallAway.style.display ='block';
+    try{
+      let infoList = document.getElementById('infoList');
+      this.info.removeChild(infoList);
+    }
+    catch{
+    }
+  },
 }
 
 //Global variable declarations
