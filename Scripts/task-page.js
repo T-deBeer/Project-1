@@ -227,6 +227,9 @@ showInfo: function(Option){
         li = document.createElement('li');
         li.innerHTML = 'Tiaan De Beer 577088';
         ul.appendChild(li);
+        li = document.createElement('li');
+        li.innerHTML = 'Tiaan Tobias van Schalkwyk 578552';
+        ul.appendChild(li);
         this.info.prepend(ul);
         break;
       default:
