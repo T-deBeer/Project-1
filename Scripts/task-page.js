@@ -258,7 +258,7 @@ function drop(ev) {
   ev.target.appendChild(document.getElementById(data));
 
   for (let i = 0; i < projects.length; i++) {
-    if (title.innerText.includes(projects[i].projName)) {
+    if (title.innerText.includes(projects[i].name)) {
       let id = Number(data.substring(data.indexOf("-") + 1));
       if (ev.target.id == "completed") {
         if (
