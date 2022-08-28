@@ -45,7 +45,7 @@ let Progressbar = {
       this.projects = JSON.parse(localStorage.getItem("projects") || "[]");
       if(this.projects!==null){
       for(let i = 0; i < this.projects.length; i++) {
-        if(this.projects[i].includes(this.curProject)){
+        if(this.projects[i].name === this.curProject){
             for(let j = 0; j < this.projects[i].devs.length; j++)
             {
                 this.devs.push(this.projects[i].devs[j]);
@@ -120,7 +120,7 @@ let Progressbar = {
     this.u.style.opacity = '0.2';
     this.p.style.opacity = '0.2';
     this.r.style.opacity = '0.2';
-    this.progressbar.style.height = "500px";
+    this.progressbar.style.height = "550px";
     this.menue.style.display = "block";
   },
 
@@ -179,6 +179,7 @@ let Progressbar = {
         }
         if(this.devs.length===0)
         {
+          li = document.createElement('li');
           li.innerHTML = 'There are no devs in this project';
           ul.appendChild(li);
         }
@@ -196,6 +197,7 @@ let Progressbar = {
         }
         if(this.bugs.length===0)
         {
+          li = document.createElement('li');
           li.innerHTML = 'There are no Bugs in this project';
           ul.appendChild(li);
         }
