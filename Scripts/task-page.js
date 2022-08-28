@@ -41,20 +41,9 @@ let Progressbar = {
       this.states.splice(0);
       this.bugsPast = 0;
       let nbugs = 0;
-      try {
-        this.curProject = document.getElementById('projects').value ?? 'DefaultProject';
-      }
-      catch{
-        
-      }
+      this.curProject = document.getElementById('projects').value;
       this.curProject = 'DefaultProject';
-      if(this.projects === null){
-        console.log('No project selected: Showing default Project.')
-        this.projects = [['DefaultProject', ['Dev1', 'Dev2'], [new BugTicket('DefaultBug1','For Default use only','Unresolved', Date.now(), Date.now(), Date.now() - 1, 'Default1'), 
-        new BugTicket('DefaultBug2','For Default use only','Resolved', Date.now(), Date.now(), Date.now() - 1, 'Default2'),
-        new BugTicket('DefaultBug3','For Default use only','Processing', Date.now(), Date.now(), Date.now() - 1, 'Default3')]]]
-        this.curProject = 'DefaultProject';
-      }
+      if(this.projects!==null){
       for(let i = 0; i < this.projects.length; i++) {
         if(this.projects[i].includes(this.curProject)){
             for(let j = 0; j < this.projects[i][1].length; j++)
@@ -80,6 +69,7 @@ let Progressbar = {
             }
             break;       
         }
+      }
     }
     console.log(this.states,
       this.devs,
