@@ -27,7 +27,7 @@ function showResolved() {
         let dueDate = document.createElement("td");
 
         title.innerText = bug.title;
-        bugProject.innerText = project.projName;
+        bugProject.innerText = project.name;
         dateCreated.innerText = formatDate(new Date(bug.dateCreated));
         status.innerText = bug.status.toUpperCase();
         dueDate.innerText = formatDate(new Date(bug.dueDate));
@@ -70,7 +70,7 @@ function showUnresolved() {
         let dueDate = document.createElement("td");
 
         title.innerText = bug.title;
-        bugProject.innerText = project.projName;
+        bugProject.innerText = project.name;
         dateCreated.innerText = formatDate(new Date(bug.dateCreated));
         status.innerText = bug.status.toUpperCase();
         dueDate.innerText = formatDate(new Date(bug.dueDate));
@@ -113,7 +113,7 @@ function showProcessing() {
         let dueDate = document.createElement("td");
 
         title.innerText = bug.title;
-        bugProject.innerText = project.projName;
+        bugProject.innerText = project.name;
         dateCreated.innerText = formatDate(new Date(bug.dateCreated));
         status.innerText = bug.status.toUpperCase();
         dueDate.innerText = formatDate(new Date(bug.dueDate));
@@ -155,7 +155,7 @@ function showAllBugs() {
       let dueDate = document.createElement("td");
 
       title.innerText = bug.title;
-      bugProject.innerText = project.projName;
+      bugProject.innerText = project.name;
       dateCreated.innerText = formatDate(new Date(bug.dateCreated));
       status.innerText = bug.status.toUpperCase();
       dueDate.innerText = formatDate(new Date(bug.dueDate));
@@ -198,7 +198,7 @@ function bugSearch() {
         let dueDate = document.createElement("td");
 
         title.innerText = bug.title;
-        bugProject.innerText = project.projName;
+        bugProject.innerText = project.name;
         dateCreated.innerText = formatDate(new Date(bug.dateCreated));
         status.innerText = bug.status.toUpperCase();
         dueDate.innerText = formatDate(new Date(bug.dueDate));
@@ -260,7 +260,7 @@ function searchDevs() {
       fullname.innerText = dev.firstname + " " + dev.lastname;
       username.innerText = dev.username;
       for (let j = 0; j < projects.length; j++) {
-        if (projects[j].projDevs.includes(dev.username)) {
+        if (projects[j].devs.includes(dev.username)) {
           projCount++;
           projBugs += projects[j].bugs.length;
         }
@@ -306,7 +306,7 @@ function sortByBugs() {
       fullname = dev.firstname + " " + dev.lastname;
       username = dev.username;
       for (let j = 0; j < projects.length; j++) {
-        if (projects[j].projDevs.includes(dev.username)) {
+        if (projects[j].devs.includes(dev.username)) {
           projCount++;
           projBugs += projects[j].bugs.length;
         }
@@ -381,7 +381,7 @@ function sortByProjects() {
       fullname = dev.firstname + " " + dev.lastname;
       username = dev.username;
       for (let j = 0; j < projects.length; j++) {
-        if (projects[j].projDevs.includes(dev.username)) {
+        if (projects[j].devs.includes(dev.username)) {
           projCount++;
           projBugs += projects[j].bugs.length;
         }
@@ -449,7 +449,7 @@ document.getElementById("bug-search").addEventListener("input", function () {
         let dueDate = document.createElement("td");
 
         title.innerText = bug.title;
-        bugProject.innerText = project.projName;
+        bugProject.innerText = project.name;
         dateCreated.innerText = formatDate(new Date(bug.dateCreated));
         status.innerText = bug.status.toUpperCase();
         dueDate.innerText = formatDate(new Date(bug.dueDate));
@@ -508,7 +508,7 @@ document.getElementById("dev-search").addEventListener("input", function () {
       fullname.innerText = dev.firstname + " " + dev.lastname;
       username.innerText = dev.username;
       for (let j = 0; j < projects.length; j++) {
-        if (projects[j].projDevs.includes(dev.username)) {
+        if (projects[j].devs.includes(dev.username)) {
           projCount++;
           projBugs += projects[j].bugs.length;
         }

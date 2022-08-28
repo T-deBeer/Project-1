@@ -104,7 +104,7 @@ window.onload = function () {
     localStorage.setItem("projects", JSON.stringify(projects));
   }
   //dummy projects section ends
-  console.log(projects);
+
   //task-page neccesities
   if (document.URL.includes("task-page")) {
     let title = document.getElementById("view-proj");
@@ -112,22 +112,24 @@ window.onload = function () {
     let currentUser = localStorage.getItem("currentUser");
     let comboBox = document.getElementById("projects");
 
-    let projs = JSON.parse(localStorage.getItem("projects"));
+    let projs = JSON.parse(localStorage.getItem("projects") || "[]");
+
+    console.log(projs);
 
     title.innerText = "Viewing " + selection;
     document.getElementById("current-user").innerText = currentUser;
 
     for (let i = 0; i < projs.length; i++) {
       //Goes through all projects in storage
-      for (let j = 0; j < projs[i].projDevs.length; j++) {
+      for (let j = 0; j < projs[i].devs.length; j++) {
         //Goes through all registered devs in projects
-        if (projs[i].projDevs[j] == currentUser) {
+        if (projs[i].devs[j] == currentUser) {
           //If the current user is a developer on the project
 
           //add the project to the selection list for the current user
           let option = document.createElement("option");
-          option.text = projs[i].projName;
-          option.value = projs[i].projName;
+          option.text = projs[i].name;
+          option.value = projs[i].name;
           if (i == 0) {
             option.selected = true;
             title.innerText = "Viewing " + option.value;
@@ -192,6 +194,7 @@ window.onload = function () {
     //Loads the table of developers
     let users = JSON.parse(localStorage.getItem("users") || "[]");
     let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+    console.log(projects);
     let devs = [];
 
     for (let i = 0; i < users.length; i++) {
@@ -212,7 +215,7 @@ window.onload = function () {
       fullname.innerText = dev.firstname + " " + dev.lastname;
       username.innerText = dev.username;
       for (let j = 0; j < projects.length; j++) {
-        if (projects[j].projDevs.includes(dev.username)) {
+        if (projects[j].devs.includes(dev.username)) {
           projCount++;
           projBugs += projects[j].bugs.length;
         }
@@ -237,7 +240,7 @@ window.onload = function () {
         let dueDate = document.createElement("td");
 
         title.innerText = bug.title;
-        bugProject.innerText = project.projName;
+        bugProject.innerText = project.name;
         dateCreated.innerText = formatDate(new Date(bug.dateCreated));
         status.innerText = bug.status.toUpperCase();
         dueDate.innerText = formatDate(new Date(bug.dueDate));
@@ -266,9 +269,9 @@ window.onload = function () {
       let numberOfBugs = document.createElement("td");
       let percentage = document.createElement("td");
 
-      name.innerText = project.projName;
+      name.innerText = project.name;
 
-      for (let dev of project.projDevs) {
+      for (let dev of project.devs) {
         for (let user of users) {
           console.log(user.username == dev);
           if (user.username == dev) {
