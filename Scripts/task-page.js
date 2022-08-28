@@ -25,7 +25,7 @@ let Progressbar = {
   r: document.getElementById('progressResolved'),
   menue: document.getElementById('menue'),
   info: document.getElementById('info'),
-  projects: JSON.parse(localStorage.getItem("projects")),
+  projects: [],
   states: [],
   devs: [],
   bugs: [],
@@ -42,27 +42,27 @@ let Progressbar = {
       this.bugsPast = 0;
       let nbugs = 0;
       this.curProject = document.getElementById('projects').value;
-      this.curProject = 'DefaultProject';
+      this.projects = JSON.parse(localStorage.getItem("projects") || "[]");
       if(this.projects!==null){
       for(let i = 0; i < this.projects.length; i++) {
         if(this.projects[i].includes(this.curProject)){
-            for(let j = 0; j < this.projects[i][1].length; j++)
+            for(let j = 0; j < this.projects[i].devs.length; j++)
             {
-                this.devs.push(this.projects[i][1][j]);
+                this.devs.push(this.projects[i].devs[j]);
             }
-            for(let j = 0; j < this.projects[i][2].length; j++)
+            for(let j = 0; j < this.projects[i].bugs.length; j++)
             {
                 if(!this.bugs.map((bug)=> {return bug.includes(this.projects[i][2][j].type)}).includes(true)){
                   nbugs = 0;
-                  this.bugs.push(`${this.projects[i][2][j].type}:  ${nbugs+1}`)
+                  this.bugs.push(`${this.projects[i].bugs[j].type}:  ${nbugs+1}`)
                 }
                 else
                 {  
                   nbugs+=1;
-                  this.bugs[this.bugs.indexOf(`${this.projects[i][2][j].type}:  ${nbugs}`)] = `${this.projects[i][2][j].type}:  ${nbugs+1}`;
+                  this.bugs[this.bugs.indexOf(`${this.projects[i].bugs[j].type}:  ${nbugs}`)] = `${this.projects[i].bugs[j].type}:  ${nbugs+1}`;
                 }
-                this.states.push(this.projects[i][2][j].status);
-                if(this.projects[i][2][j].dueDate >= Date.now() && this.projects[i][2][j].status !== 'Resolved')
+                this.states.push(this.projects[i].bugs[j].status);
+                if(this.projects[i].bugs[j].dueDate >= Date.now() && this.projects[i].bugs[j].status !== 'Resolved')
                 {
                   this.bugsPast += 1;
                 }
