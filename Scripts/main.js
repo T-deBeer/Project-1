@@ -28,6 +28,14 @@ class BugTicket {
   }
 }
 
+class Project {
+  constructor(projName, projDevs, bugs) {
+    this.name = projName;
+    this.devs = projDevs;
+    this.bugs = bugs;
+  }
+}
+
 //Onload global variables
 let users = [];
 let projects = [];
@@ -96,7 +104,7 @@ window.onload = function () {
     localStorage.setItem("projects", JSON.stringify(projects));
   }
   //dummy projects section ends
-
+  console.log(projects);
   //task-page neccesities
   if (document.URL.includes("task-page")) {
     let title = document.getElementById("view-proj");
