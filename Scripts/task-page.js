@@ -77,7 +77,6 @@ let Progressbar = {
                 {
                   this.bugsPast += 1;
                 }
-    
             }
             break;       
         }
