@@ -51,6 +51,7 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
     if (confirmPassword==password)
   {
     users.push(new User(name,surname,username, password));
+    localStorage.setItem(JSON.stringify(users));
     e.preventDefault();
   }
   else{
