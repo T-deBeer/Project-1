@@ -52,6 +52,8 @@ window.onload = function () {
     users.push(user);
     user = new User("Jaco", "Mathee", "timejunky1", "578381", "developer");
     users.push(user);
+    user = new User("Tobias", "van Schalkwyk", "Rat3l", "578552", "developer");
+    users.push(user);
     localStorage.setItem("users", JSON.stringify(users));
   }
   //dummy users section ends
