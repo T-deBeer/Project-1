@@ -112,7 +112,7 @@ form input:hover {
 
 
 #progressUnresolved {
-    background-color: var(--main);
+    background-color: var(--light);
 }
 
 #progressProccessing {
@@ -122,7 +122,7 @@ form input:hover {
 
 
 #progressResolved {
-    background-color: var(--light);
+    background-color: var(--main);
     margin-left: -4px;
 }
 
@@ -615,4 +615,16 @@ td:last-child {
 
 #devs-container {
     background-color: #000;
+}
+
+#unresolved h2 {
+    color: var(--light);
+}
+
+#proccessing h2 {
+    color: var(--white);
+}
+
+#completed h2 {
+    color: var(--main);
 }

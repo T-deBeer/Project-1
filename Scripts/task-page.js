@@ -19,12 +19,12 @@ class BugTicket {
 }
 //initialises Progressbar and functions for progressbar
 let Progressbar = {
-  progressbar: document.querySelector('#progressbar'),
-  u: document.getElementById('progressUnresolved'),
-  p: document.getElementById('progressProccessing'),
-  r: document.getElementById('progressResolved'),
-  menue: document.getElementById('menue'),
-  info: document.getElementById('info'),
+  progressbar: document.querySelector("#progressbar"),
+  u: document.getElementById("progressUnresolved"),
+  p: document.getElementById("progressProccessing"),
+  r: document.getElementById("progressResolved"),
+  menue: document.getElementById("menue"),
+  info: document.getElementById("info"),
   projects: [],
   states: [],
   devs: [],
@@ -32,236 +32,267 @@ let Progressbar = {
   moreInfo: [],
   notes: [],
   bugsPast: 0,
-  curProject: '',
+  curProject: "",
   num1: 0,
   num2: 0,
   num3: 0,
-//getting the info from the local storage
-  getInfo: function(){
-      this.devs.splice(0);
-      this.bugs.splice(0);
-      this.states.splice(0);
-      this.bugsPast = 0;
-      let nbugs = 0;
-      this.curProject = document.getElementById('projects').value;
-      this.projects = JSON.parse(localStorage.getItem("projects") || "[]");
-      if(this.projects!==null){
-      for(let i = 0; i < this.projects.length; i++) {
-        if(this.projects[i].name === this.curProject){
-            for(let j = 0; j < this.projects[i].devs.length; j++)
-            {
-                this.devs.push(this.projects[i].devs[j]);
+  //getting the info from the local storage
+  getInfo: function () {
+    this.devs.splice(0);
+    this.bugs.splice(0);
+    this.states.splice(0);
+    this.bugsPast = 0;
+    let nbugs = 0;
+    this.curProject = document.getElementById("projects").value;
+    this.projects = JSON.parse(localStorage.getItem("projects") || "[]");
+    if (this.projects !== null) {
+      for (let i = 0; i < this.projects.length; i++) {
+        if (this.projects[i].name === this.curProject) {
+          for (let j = 0; j < this.projects[i].devs.length; j++) {
+            this.devs.push(this.projects[i].devs[j]);
+          }
+          for (let j = 0; j < this.projects[i].bugs.length; j++) {
+            if (
+              !this.bugs
+                .map((bug) => {
+                  return bug.includes(this.projects[i].bugs[j].type);
+                })
+                .includes(true)
+            ) {
+              nbugs = 0;
+              this.bugs.push(`${this.projects[i].bugs[j].type}:  ${nbugs + 1}`);
+            } else {
+              nbugs += 1;
+              this.bugs[
+                this.bugs.indexOf(`${this.projects[i].bugs[j].type}:  ${nbugs}`)
+              ] = `${this.projects[i].bugs[j].type}:  ${nbugs + 1}`;
             }
-            for(let j = 0; j < this.projects[i].bugs.length; j++)
-            {
-                if(!this.bugs.map((bug)=> {return bug.includes(this.projects[i].bugs[j].type)}).includes(true)){
-                  nbugs = 0;
-                  this.bugs.push(`${this.projects[i].bugs[j].type}:  ${nbugs+1}`)
-                }
-                else
-                {  
-                  nbugs+=1;
-                  this.bugs[this.bugs.indexOf(`${this.projects[i].bugs[j].type}:  ${nbugs}`)] = `${this.projects[i].bugs[j].type}:  ${nbugs+1}`;
-                }
-                this.states.push(this.projects[i].bugs[j].status);
-                if(this.projects[i].bugs[j].dueDate >= Date.now() && this.projects[i].bugs[j].status !== 'Resolved')
-                {
-                  this.bugsPast += 1;
-                }
+            this.states.push(this.projects[i].bugs[j].status);
+            if (
+              this.projects[i].bugs[j].dueDate >= Date.now() &&
+              this.projects[i].bugs[j].status !== "Resolved"
+            ) {
+              this.bugsPast += 1;
             }
-            break;       
+          }
+          break;
         }
       }
     }
-    console.log(this.states,
+    console.log(
+      this.states,
       this.devs,
       this.bugs,
       this.bugsPast,
-      this.curProject,
-      )
+      this.curProject
+    );
   },
 
   //load the visuals for the progressbar
-  loadprogressBar: function(){
-  this.getInfo();
-  console.log(this.progressbar.style.width);
-  this.num1 = 0;
-  this.num2 = 0; 
-  this.num3 = 0;
-  let percentage1 = 0, percentage2 = 0, percentage3 = 0
-  this.states.forEach(element => {
-    switch(element)
-    {
-      case 'Unresolved':
-        this.num1+= 1;
-        percentage1 = ((this.num1/this.states.length) * 100)/1;
-        break;
-      case 'Processing':
-        this.num2+= 1;
-        percentage2 = ((this.num2/this.states.length) * 100)/1;
-        break;
-      case 'Resolved':
-        this.num3+= 1;
-        percentage3 = ((this.num3/this.states.length) * 100)/1;
-        break;
-      default:
-        break;
-    }
-  });
-  this.u.style.width = `${percentage1}%`;
-  this.p.style.width = `${percentage2}%`;
-  this.r.style.width = `${percentage3}%`;
+  loadprogressBar: function () {
+    this.getInfo();
+    console.log(this.progressbar.style.width);
+    this.num1 = 0;
+    this.num2 = 0;
+    this.num3 = 0;
+    let percentage1 = 0,
+      percentage2 = 0,
+      percentage3 = 0;
+    this.states.forEach((element) => {
+      switch (element) {
+        case "unresolved":
+          this.num1 += 1;
+          percentage1 = ((this.num1 / this.states.length) * 100) / 1;
+          break;
+        case "proccessing":
+          this.num2 += 1;
+          percentage2 = ((this.num2 / this.states.length) * 100) / 1;
+          break;
+        case "completed":
+          this.num3 += 1;
+          percentage3 = ((this.num3 / this.states.length) * 100) / 1;
+          break;
+        default:
+          break;
+      }
+    });
+    this.u.style.width = `${percentage1}%`;
+    this.p.style.width = `${percentage2}%`;
+    this.r.style.width = `${percentage3}%`;
 
-  console.log(this.num1,
-    this.num2,
-    this.num3)
+    console.log(this.num1, this.num2, this.num3);
   },
-//displays the initial container for the menue
-  showDetails: function()
-  {
-    this.u.style.opacity = '0.2';
-    this.p.style.opacity = '0.2';
-    this.r.style.opacity = '0.2';
+  //displays the initial container for the menue
+  showDetails: function () {
+    this.u.style.opacity = "0.2";
+    this.p.style.opacity = "0.2";
+    this.r.style.opacity = "0.2";
     this.progressbar.style.height = "550px";
     this.menue.style.display = "block";
   },
-//hides the container for the menue and initiates the hideifno method
-  hideDetails: function()
-  {
+  //hides the container for the menue and initiates the hideifno method
+  hideDetails: function () {
     this.progressbar.style.height = "20px";
     this.menue.style.display = "none";
-    this.u.style.opacity = '1';
-    this.p.style.opacity = '1';
-    this.r.style.opacity = '1';
-  
+    this.u.style.opacity = "1";
+    this.p.style.opacity = "1";
+    this.r.style.opacity = "1";
+
     this.hideInfo();
   },
-//show the info for the spacific on click avent of a menue item as well as hiding the menue
-  showInfo: function(Option){
-    this.info.style.display = 'block';
-    let fallAway = document.getElementById('fallAway');
-    fallAway.style.display ='none';
-    let back = document.createElement('h4');
-    if(document.getElementById('back')===null){
-      back.innerHTML = ('<h4 onclick="Progressbar.hideInfo();">Back</h4>');
-      back.id = 'back';
+  //show the info for the spacific on click avent of a menue item as well as hiding the menue
+  showInfo: function (Option) {
+    this.info.style.display = "block";
+    let fallAway = document.getElementById("fallAway");
+    fallAway.style.display = "none";
+    let back = document.createElement("h4");
+    if (document.getElementById("back") === null) {
+      back.innerHTML = '<h4 onclick="Progressbar.hideInfo();">Back</h4>';
+      back.id = "back";
       this.info.appendChild(back);
     }
-    let ul = document.createElement('ul');
-    ul.style.height = 'auto';
-    ul.id = 'infoList';
-    ul.style.listStyle = 'none';
+    let ul = document.createElement("ul");
+    ul.style.height = "auto";
+    ul.id = "infoList";
+    ul.style.listStyle = "none";
     let li;
     let textarea;
-  switch(Option){
-      case 'Summary':
-        ul.innerHTML = 'Summary:'
-        li = document.createElement('li');
+    switch (Option) {
+      case "Summary":
+        ul.innerHTML = "Summary:";
+        li = document.createElement("li");
         li.innerHTML = `Unresolved: ${this.num1}`;
         ul.appendChild(li);
-        li = document.createElement('li');
+        li = document.createElement("li");
         li.innerHTML = `Processing: ${this.num2}`;
         ul.appendChild(li);
-        li = document.createElement('li');
+        li = document.createElement("li");
         li.innerHTML = `Resolved: ${this.num3}`;
         ul.appendChild(li);
-        li = document.createElement('li');
+        li = document.createElement("li");
         li.innerHTML = `Bugs overdue: ${this.bugsPast}`;
         ul.appendChild(li);
         this.info.prepend(ul);
         break;
-      case 'ShowDevs':
-        if(this.devs.length > 0){
-          ul.innerHTML = 'Devs:'       
-          this.devs.forEach(dev => {
-            li = document.createElement('li');
+      case "ShowDevs":
+        if (this.devs.length > 0) {
+          ul.innerHTML = "Devs:";
+          this.devs.forEach((dev) => {
+            li = document.createElement("li");
             li.innerHTML = `${dev}`;
             ul.appendChild(li);
           });
         }
-        if(this.devs.length===0)
-        {
-          li = document.createElement('li');
-          li.innerHTML = 'There are no devs in this project';
+        if (this.devs.length === 0) {
+          li = document.createElement("li");
+          li.innerHTML = "There are no devs in this project";
           ul.appendChild(li);
         }
-          this.info.prepend(ul);        
+        this.info.prepend(ul);
         break;
-      case 'ShowBugs':
-        if(this.bugs.length> 0)
-        {
-          ul.innerHTML = 'Bugs:'
-          this.bugs.forEach(bug => {
-          li = document.createElement('li');
-          li.innerHTML = `${bug}`;
-          ul.appendChild(li);
+      case "ShowBugs":
+        if (this.bugs.length > 0) {
+          ul.innerHTML = "Bugs:";
+          this.bugs.forEach((bug) => {
+            li = document.createElement("li");
+            li.innerHTML = `${bug}`;
+            ul.appendChild(li);
           });
         }
-        if(this.bugs.length===0)
-        {
-          li = document.createElement('li');
-          li.innerHTML = 'There are no Bugs in this project';
+        if (this.bugs.length === 0) {
+          li = document.createElement("li");
+          li.innerHTML = "There are no Bugs in this project";
           ul.appendChild(li);
         }
         this.info.prepend(ul);
         break;
-      case 'Notes':
-        li = document.createElement('li');
-        ul.innerHTML = 'Notes:';
-        textarea = document.createElement('textarea');
-        textarea.style.color = 'white';
-        textarea.style.backgroundColor = '#252A34';
-        textarea.style.display = 'flex';
-        textarea.style.outline = 'none';
-        textarea.style.border = 'none';
-        textarea.style.width = '100%';
-        textarea.style.height = '380px';
-        textarea.style.resize = 'none';
-        textarea.maxLength = '200';
-        textarea.id = 'notes';
-        if(this.notes.map((item)=>{return item.includes(this.curProject);}).includes(true) && this.notes.length>0){
-          textarea.value = this.notes.map((item)=>{return item.slice(item.indexOf(':')+1)})[this.notes.map((item)=>{return item.includes(this.curProject);}).indexOf(true)];
+      case "Notes":
+        li = document.createElement("li");
+        ul.innerHTML = "Notes:";
+        textarea = document.createElement("textarea");
+        textarea.style.color = "white";
+        textarea.style.backgroundColor = "#252A34";
+        textarea.style.display = "flex";
+        textarea.style.outline = "none";
+        textarea.style.border = "none";
+        textarea.style.width = "100%";
+        textarea.style.height = "380px";
+        textarea.style.resize = "none";
+        textarea.maxLength = "200";
+        textarea.id = "notes";
+        if (
+          this.notes
+            .map((item) => {
+              return item.includes(this.curProject);
+            })
+            .includes(true) &&
+          this.notes.length > 0
+        ) {
+          textarea.value = this.notes.map((item) => {
+            return item.slice(item.indexOf(":") + 1);
+          })[
+            this.notes
+              .map((item) => {
+                return item.includes(this.curProject);
+              })
+              .indexOf(true)
+          ];
         }
         li.appendChild(textarea);
         ul.appendChild(li);
         this.info.prepend(ul);
         break;
-      case 'MoreInfo':
-        li = document.createElement('li');
-        ul.innerHTML = 'More Information:';
-        textarea = document.createElement('textarea');
-        textarea = document.createElement('textarea');
-        textarea.style.color = 'white';
-        textarea.style.backgroundColor = '#252A34';
-        textarea.style.display = 'flex';
-        textarea.style.flexDirection = 'column';
-        textarea.style.outline = 'none';
-        textarea.style.border = 'none';
-        textarea.style.width = '100%';
-        textarea.style.height = '350px';
-        textarea.style.resize = 'none';
-        textarea.maxLength = '200';
-        textarea.id = 'more-info';
-        if(this.moreInfo.map((item)=>{return item.includes(this.curProject);}).includes(true) && this.moreInfo.length>0){
-          textarea.value = this.moreInfo.map((item)=>{return item.slice(item.indexOf(':')+1)})[this.moreInfo.map((item)=>{return item.includes(this.curProject);}).indexOf(true)];
+      case "MoreInfo":
+        li = document.createElement("li");
+        ul.innerHTML = "More Information:";
+        textarea = document.createElement("textarea");
+        textarea = document.createElement("textarea");
+        textarea.style.color = "white";
+        textarea.style.backgroundColor = "#252A34";
+        textarea.style.display = "flex";
+        textarea.style.flexDirection = "column";
+        textarea.style.outline = "none";
+        textarea.style.border = "none";
+        textarea.style.width = "100%";
+        textarea.style.height = "350px";
+        textarea.style.resize = "none";
+        textarea.maxLength = "200";
+        textarea.id = "more-info";
+        if (
+          this.moreInfo
+            .map((item) => {
+              return item.includes(this.curProject);
+            })
+            .includes(true) &&
+          this.moreInfo.length > 0
+        ) {
+          textarea.value = this.moreInfo.map((item) => {
+            return item.slice(item.indexOf(":") + 1);
+          })[
+            this.moreInfo
+              .map((item) => {
+                return item.includes(this.curProject);
+              })
+              .indexOf(true)
+          ];
         }
         li.appendChild(textarea);
         ul.appendChild(li);
         this.info.prepend(ul);
         break;
-      case 'ShowContributers':
-        ul.innerHTML = 'Contributers:'
-        li = document.createElement('li');
-        li.innerHTML = 'Jacobus gerhardus Lotter 578559';
+      case "ShowContributers":
+        ul.innerHTML = "Contributers:";
+        li = document.createElement("li");
+        li.innerHTML = "Jacobus gerhardus Lotter 578559";
         ul.appendChild(li);
-        li = document.createElement('li');
-        li.innerHTML = 'Stephanus Jacobus Mathee 578381';
+        li = document.createElement("li");
+        li.innerHTML = "Stephanus Jacobus Mathee 578381";
         ul.appendChild(li);
-        li = document.createElement('li');
-        li.innerHTML = 'Tiaan De Beer 577088';
+        li = document.createElement("li");
+        li.innerHTML = "Tiaan De Beer 577088";
         ul.appendChild(li);
-        li = document.createElement('li');
-        li.innerHTML = 'Tiaan Tobias van Schalkwyk 578552';
+        li = document.createElement("li");
+        li.innerHTML = "Tiaan Tobias van Schalkwyk 578552";
         ul.appendChild(li);
         this.info.prepend(ul);
         break;
@@ -269,48 +300,66 @@ let Progressbar = {
         break;
     }
   },
-//hides the info and displays the menue
-  hideInfo: function(){
-    try{
-      if(this.curProject !==''){
-        let projNotes = `${this.curProject}:${document.getElementById('notes').value}`;
-        if(!this.notes.map((item)=>{return item.includes(this.curProject);}).includes(true)){
+  //hides the info and displays the menue
+  hideInfo: function () {
+    try {
+      if (this.curProject !== "") {
+        let projNotes = `${this.curProject}:${
+          document.getElementById("notes").value
+        }`;
+        if (
+          !this.notes
+            .map((item) => {
+              return item.includes(this.curProject);
+            })
+            .includes(true)
+        ) {
           this.notes.push(projNotes);
-        }
-        else{
-          this.notes[this.notes.map((item)=>{return item.includes(this.curProject);}).indexOf(true)] = projNotes;
+        } else {
+          this.notes[
+            this.notes
+              .map((item) => {
+                return item.includes(this.curProject);
+              })
+              .indexOf(true)
+          ] = projNotes;
         }
       }
-    }
-    catch{
+    } catch {}
 
-    }
-    
-    try{
-      if(this.curProject !==''){
-        let projMoreInfo = `${this.curProject}:${document.getElementById('more-info').value}`;
-        if(!this.moreInfo.map((item)=>{return item.includes(this.curProject);}).includes(true)){
+    try {
+      if (this.curProject !== "") {
+        let projMoreInfo = `${this.curProject}:${
+          document.getElementById("more-info").value
+        }`;
+        if (
+          !this.moreInfo
+            .map((item) => {
+              return item.includes(this.curProject);
+            })
+            .includes(true)
+        ) {
           this.moreInfo.push(projMoreInfo);
-        }
-        else{
-          this.moreInfo[this.moreInfo.map((item)=>{return item.includes(this.curProject);}).indexOf(true)] = projMoreInfo;
+        } else {
+          this.moreInfo[
+            this.moreInfo
+              .map((item) => {
+                return item.includes(this.curProject);
+              })
+              .indexOf(true)
+          ] = projMoreInfo;
         }
       }
-    }
-    catch{
-
-    }
-    this.info.style.display = 'none'
-    let fallAway = document.getElementById('fallAway');
-    fallAway.style.display ='block';
-    try{
-      let infoList = document.getElementById('infoList');
+    } catch {}
+    this.info.style.display = "none";
+    let fallAway = document.getElementById("fallAway");
+    fallAway.style.display = "block";
+    try {
+      let infoList = document.getElementById("infoList");
       this.info.removeChild(infoList);
-    }
-    catch{
-    }
+    } catch {}
   },
-}
+};
 
 //Global variable declarations
 let projects = JSON.parse(localStorage.getItem("projects"));
@@ -332,7 +381,7 @@ function drop(ev) {
   ev.target.appendChild(document.getElementById(data));
 
   for (let i = 0; i < projects.length; i++) {
-    if (title.innerText.includes(projects[i].projName)) {
+    if (title.innerText.includes(projects[i].name)) {
       let id = Number(data.substring(data.indexOf("-") + 1));
       if (ev.target.id == "completed") {
         if (
@@ -356,9 +405,10 @@ function drop(ev) {
       }
 
       localStorage.setItem("projects", JSON.stringify(projects));
+      Progressbar.loadprogressBar();
     }
   }
-  console.log("projects", JSON.stringify(projects) || "[]");
+  console.log(JSON.parse(localStorage.getItem("projects") || "[]"));
 }
 
 function logOut() {
@@ -368,6 +418,7 @@ function logOut() {
 }
 
 document.getElementById("projects").addEventListener("change", function () {
+  Progressbar.loadprogressBar();
   let selection = document.getElementById("projects").value;
   localStorage.setItem("currProject", selection);
   let title = document.getElementById("view-proj");
@@ -481,7 +532,7 @@ window.addEventListener("click", function (event) {
       "Bug or Feature Information";
     //If a edit button is clicked then the modal is opened with the bug ticket info
     for (let i = 0; i < projects.length; i++) {
-      if (title.innerText.includes(projects[i].projName)) {
+      if (title.innerText.includes(projects[i].name)) {
         //if the
         //Uses string manipulation to find the id of the bug
         let string = event.target.id.substring(
@@ -535,7 +586,7 @@ document.getElementById("edit-form").addEventListener("submit", function (ev) {
     let id = Number(localStorage.getItem("edit-id"));
 
     for (let i = 0; i < projects.length; i++) {
-      if (title.innerText.includes(projects[i].projName)) {
+      if (title.innerText.includes(projects[i].name)) {
         //Set title
         projects[i].bugs[id].title =
           document.getElementById("modal-bug-title").value;
