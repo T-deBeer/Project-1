@@ -1,3 +1,131 @@
+class DevUser {
+  constructor(firstname, lastname, username, password, auth) {
+    this.firstname = firstname;
+    this.lastname = lastname;
+    this.username = username;
+    this.password = password;
+    this.auth = auth;
+  }
+}
+
+
+//Opens up the add dev modal
+document.getElementById("Add-DEV-button").addEventListener("click", function () {
+  let modal = document.getElementById("AddDev-modal");
+
+  modal.style.display = "block";
+});
+
+//Opens up the dev Reset warning modal
+document.getElementById("Reset-DEV-button").addEventListener("click", function () {
+  let modal = document.getElementById("ResetDEV-modal");
+
+  modal.style.display = "block";
+});
+
+//Opens up the remove dev modal
+document.getElementById("Remove-DEV-button").addEventListener("click", function () {
+
+  let modal = document.getElementById("RemoveDEV-modal");
+  modal.style.display = "block";  
+
+});
+
+
+
+
+//When remove button is clicked in the remove modal(Remove from localstorage)
+document.getElementById("Remove-DEVform").addEventListener("submit", function () {
+  let RemoveDevUsername = document.getElementById("Remove-DEV").value;
+
+  let users = [];
+  let newUsers = [];''
+  users = JSON.parse(localStorage.getItem("users") || "[]");
+  len = users.length;
+
+  for(let i=0; i < len; i++)
+  {
+    if((users[i].username != RemoveDevUsername) && (len != 0))
+    {
+      let DevName = users[i].firstname;
+      let DevSurname = users[i].lastname;
+      let DevUsername = users[i].username;
+      let DevPassword = users[i].password;
+      let DevAuth = users[i].auth;
+      let user = new DevUser(DevName, DevSurname, DevUsername, DevPassword, DevAuth);
+      newUsers.push(user);
+
+    }
+    
+    
+  }
+  
+  localStorage.clear("users");
+  localStorage.setItem("users", JSON.stringify(newUsers));
+
+});
+
+
+//Add developer to local storage(Button inside add modal)
+document.getElementById("edit-DEVform").addEventListener("submit", function () {
+  let users = [];
+  users = JSON.parse(localStorage.getItem("users") || "[]");
+  //console.log(users);
+  let DevName = document.getElementById("DEV-Add-Name").value;
+  let DevSurname = document.getElementById("DEV-Add-Surname").value;
+  let DevUsername = document.getElementById("DEV-Add-Username").value;
+  let DevPassword = document.getElementById("DEV-Add-Password").value;
+
+  let user = new DevUser(DevName, DevSurname, DevUsername, DevPassword, "developer");
+  users.push(user); 
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+});
+
+//When reset button is clicked in reset modal
+document.getElementById("Reset-DEVform").addEventListener("submit", function () {
+
+  localStorage.clear("users");
+
+  users = JSON.parse(localStorage.getItem("users") || "[]");
+  let user = new DevUser("Administrator", "Profile", "Admin", "1234", "admin");
+  users.push(user);
+  user = new DevUser("Tiaan", "De Beer", "T-deBeer", "577088", "developer");
+  users.push(user);
+  user = new DevUser("Hardus", "Lotter", "HardusLotter", "578559", "developer");
+  users.push(user);
+  user = new DevUser("Jaco", "Mathee", "timejunky1", "578381", "developer");
+  users.push(user);
+  user = new DevUser("Tobias", "van Schalkwyk", "Rat3l", "578552", "developer");
+  users.push(user);
+
+  localStorage.setItem("users", JSON.stringify(users));
+
+});
+
+//Close the add dev modal
+document.getElementById("closeDEV-modal").addEventListener("click", function () {
+  let modal = document.getElementById("AddDev-modal");
+  modal.style.display = "none";
+});
+
+//Close the remove dev modal
+document.getElementById("closeRemoveDEV-modal").addEventListener("click", function () {
+  let modal = document.getElementById("RemoveDEV-modal");
+  modal.style.display = "none";
+});
+
+//Close the reset dev modal
+document.getElementById("closeResetDEV-modal").addEventListener("click", function () {
+  let modal = document.getElementById("ResetDEV-modal");
+  modal.style.display = "none";
+});
+
+
+
+
+
 function logOut() {
   if (confirm("Are you sure you want to log out?")) {
     window.location.href = "../Pages/login-page.html";

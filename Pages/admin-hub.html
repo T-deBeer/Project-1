@@ -13,39 +13,70 @@
     <header>
 
     </header>
-    <div class="modal" id="edit-modal">
+    <div class="modal" id="ResetDEV-modal">
         <div class="modal-content">
-            <span class="close" id="close-modal">&times;</span>
-            <h3 id="modal-title">Bug or Feature Information</h3>
-            <form id="add-dev-form">
+            <span class="close" id="closeResetDEV-modal">&times;</span>
+            <h3 id="modal-DEVReset">Reset Developer List</h3>
+            <form id="Reset-DEVform">
+
                 <div class="modal-div">
-                    <label for="tile">Title:</label>
-                    <input name="title" id="modal-bug-title" type="text" placeholder="Title" required>
+                    <h1 style="font-size:30px;">Are you sure you want to reset the developer list?</h1>         
                 </div>
-                <div class="modal-div modal-radio">
-                    <label for="bug">BUG</label>
-                    <input id="modal-bug-radio-bug" type="radio" id="bug" value="bug" name="type" required>
-                    <label for="fr">FEATURE REQUEST</label>
-                    <input id="modal-bug-radio-feature-request" type="radio" id="fr" value="feature request" name="type"
-                        onclick="featureReq()" required>
-                </div>
+
+
                 <div class="modal-div">
-                    <label for="desc">Description:</label>
-                    <input name="desc" id="modal-bug-description" type="text" placeholder="Description" required>
+                    <button type="submit" id="modal-ResetDev-button">Confirm</button>
                 </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="RemoveDEV-modal">
+        <div class="modal-content">
+            <span class="close" id="closeRemoveDEV-modal">&times;</span>
+            <h3 id="modal-DEVusername">Remove Developer</h3>
+            <form id="Remove-DEVform">
+
                 <div class="modal-div">
-                    <label for="dueDate">Due Date:</label>
-                    <input name="dueDate" id="modal-bug-due" type="date" placeholder="Due Date" required>
+                    <label for="DEV">Username:</label>
+                    <input name="DEV" id="Remove-DEV" type="text" placeholder="Username" required>
                 </div>
+
+
                 <div class="modal-div">
-                    <select name="status" id="bug-status">
-                        <option value="unresolved">UNRESOLVED</option>
-                        <option value="proccessing">PROCCESSING</option>
-                        <option value="completed">COMPLETED</option>
-                    </select>
+                    <button type="submit" id="modal-RemoveDev-button">Remove</button>
                 </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal" id="AddDev-modal">
+        <div class="modal-content">
+            <span class="close" id="closeDEV-modal">&times;</span>
+            <h3 id="modal-DEVname">Add Developer</h3>
+            <form id="edit-DEVform">
+
                 <div class="modal-div">
-                    <button type="submit" id="modal-button">Edit</button>
+                    <label for="DEV">Name:</label>
+                    <input name="DEV" id="DEV-Add-Name" type="text" placeholder="Name" required>
+                </div>
+
+                <div class="modal-div">
+                    <label for="DEV">Surname:</label>
+                    <input name="DEV" id="DEV-Add-Surname" type="text" placeholder="Surname" required>
+                </div>
+
+                <div class="modal-div">
+                    <label for="DEV">Username:</label>
+                    <input name="DEV" id="DEV-Add-Username" type="text" placeholder="Username" required>
+                </div>
+                
+                <div class="modal-div">
+                    <label for="DEV">Password:</label>
+                    <input name="DEV" id="DEV-Add-Password" type="text" placeholder="Password" required>
+                </div>
+
+
+                <div class="modal-div">
+                    <button type="submit" id="modal-AddDev-button">ADD</button>
                 </div>
             </form>
         </div>
@@ -76,13 +107,17 @@
                     </div>
                     <div class="dev-buttons">
                         <div class="search">
-                            <input type="text" id="dev-search">
+                            <input type="text" id="dev-search" placeholder="NAME">
                             <button onclick="devSearch()">Search</button>
                         </div>
                         <div class="filter-buttons">
                             <button onclick="sortByBugs()">Sort by Bugs</button>
                             <button onclick="sortByProjects()">Sort by Projects</button>
-                            <button>Add a Developer</button>
+                            <button id="Add-DEV-button">Add a Developer</button>
+                            <!-- //////////////////////////////////////////////////////// -->
+                            <button id="Remove-DEV-button">Remove a Developer</button>
+                            <button id="Reset-DEV-button">Reset Developer List</button>
+                            <!-- //////////////////////////////////////////////////////// -->
                         </div>
                     </div>
                 </div>
@@ -102,7 +137,7 @@
                     </div>
                     <div class="dev-buttons">
                         <div class="search">
-                            <input type="text" id="bug-search">
+                            <input type="text" id="bug-search" placeholder="TITLE">
                             <button onclick="bugSearch()">Search</button>
                         </div>
                         <div class="filter-buttons">
