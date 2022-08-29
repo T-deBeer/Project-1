@@ -140,11 +140,12 @@ window.onload = function () {
           //ends
 
           let currProj = localStorage.getItem("currProject");
+          console.log(linkedProjects[0]);
           if (currProj != null && linkedProjects.includes(currProj)) {
             document.getElementById("projects").value = currProj;
             title.innerText = "Viewing " + currProj;
           } else {
-            currProj = option.value;
+            currProj = linkedProjects[0];
             localStorage.getItem("currProject", currProj);
             title.innerText = "Viewing " + currProj;
           }
