@@ -29,12 +29,14 @@ let Progressbar = {
   states: [],
   devs: [],
   bugs: [],
+  moreInfo: [],
+  notes: [],
   bugsPast: 0,
   curProject: '',
   num1: 0,
   num2: 0,
   num3: 0,
-
+//getting the info from the local storage
   getInfo: function(){
       this.devs.splice(0);
       this.bugs.splice(0);
@@ -79,6 +81,7 @@ let Progressbar = {
       )
   },
 
+  //load the visuals for the progressbar
   loadprogressBar: function(){
   this.getInfo();
   console.log(this.progressbar.style.width);
@@ -113,17 +116,16 @@ let Progressbar = {
     this.num2,
     this.num3)
   },
-
+//displays the initial container for the menue
   showDetails: function()
   {
-    this.loadprogressBar();
     this.u.style.opacity = '0.2';
     this.p.style.opacity = '0.2';
     this.r.style.opacity = '0.2';
     this.progressbar.style.height = "550px";
     this.menue.style.display = "block";
   },
-
+//hides the container for the menue and initiates the hideifno method
   hideDetails: function()
   {
     this.progressbar.style.height = "20px";
@@ -134,7 +136,7 @@ let Progressbar = {
   
     this.hideInfo();
   },
-
+//show the info for the spacific on click avent of a menue item as well as hiding the menue
   showInfo: function(Option){
     this.info.style.display = 'block';
     let fallAway = document.getElementById('fallAway');
@@ -150,7 +152,7 @@ let Progressbar = {
     ul.id = 'infoList';
     ul.style.listStyle = 'none';
     let li;
-  
+    let textarea;
   switch(Option){
       case 'Summary':
         ul.innerHTML = 'Summary:'
@@ -203,9 +205,49 @@ let Progressbar = {
         }
         this.info.prepend(ul);
         break;
-      case 'Option 4':
+      case 'Notes':
+        li = document.createElement('li');
+        ul.innerHTML = 'Notes:';
+        textarea = document.createElement('textarea');
+        textarea.style.color = 'white';
+        textarea.style.backgroundColor = '#252A34';
+        textarea.style.display = 'flex';
+        textarea.style.outline = 'none';
+        textarea.style.border = 'none';
+        textarea.style.width = '100%';
+        textarea.style.height = '380px';
+        textarea.style.resize = 'none';
+        textarea.maxLength = '200';
+        textarea.id = 'notes';
+        if(this.notes.map((item)=>{return item.includes(this.curProject);}).includes(true) && this.notes.length>0){
+          textarea.value = this.notes.map((item)=>{return item.slice(item.indexOf(':')+1)})[this.notes.map((item)=>{return item.includes(this.curProject);}).indexOf(true)];
+        }
+        li.appendChild(textarea);
+        ul.appendChild(li);
+        this.info.prepend(ul);
         break;
-      case 'Option 5':
+      case 'MoreInfo':
+        li = document.createElement('li');
+        ul.innerHTML = 'More Information:';
+        textarea = document.createElement('textarea');
+        textarea = document.createElement('textarea');
+        textarea.style.color = 'white';
+        textarea.style.backgroundColor = '#252A34';
+        textarea.style.display = 'flex';
+        textarea.style.flexDirection = 'column';
+        textarea.style.outline = 'none';
+        textarea.style.border = 'none';
+        textarea.style.width = '100%';
+        textarea.style.height = '350px';
+        textarea.style.resize = 'none';
+        textarea.maxLength = '200';
+        textarea.id = 'more-info';
+        if(this.moreInfo.map((item)=>{return item.includes(this.curProject);}).includes(true) && this.moreInfo.length>0){
+          textarea.value = this.moreInfo.map((item)=>{return item.slice(item.indexOf(':')+1)})[this.moreInfo.map((item)=>{return item.includes(this.curProject);}).indexOf(true)];
+        }
+        li.appendChild(textarea);
+        ul.appendChild(li);
+        this.info.prepend(ul);
         break;
       case 'ShowContributers':
         ul.innerHTML = 'Contributers:'
@@ -227,8 +269,37 @@ let Progressbar = {
         break;
     }
   },
-
+//hides the info and displays the menue
   hideInfo: function(){
+    try{
+      if(this.curProject !==''){
+        let projNotes = `${this.curProject}:${document.getElementById('notes').value}`;
+        if(!this.notes.map((item)=>{return item.includes(this.curProject);}).includes(true)){
+          this.notes.push(projNotes);
+        }
+        else{
+          this.notes[this.notes.map((item)=>{return item.includes(this.curProject);}).indexOf(true)] = projNotes;
+        }
+      }
+    }
+    catch{
+
+    }
+    
+    try{
+      if(this.curProject !==''){
+        let projMoreInfo = `${this.curProject}:${document.getElementById('more-info').value}`;
+        if(!this.moreInfo.map((item)=>{return item.includes(this.curProject);}).includes(true)){
+          this.moreInfo.push(projMoreInfo);
+        }
+        else{
+          this.moreInfo[this.moreInfo.map((item)=>{return item.includes(this.curProject);}).indexOf(true)] = projMoreInfo;
+        }
+      }
+    }
+    catch{
+
+    }
     this.info.style.display = 'none'
     let fallAway = document.getElementById('fallAway');
     fallAway.style.display ='block';
