@@ -94,39 +94,7 @@ document.getElementById("edit-DEVform").addEventListener("submit", function () {
 document
   .getElementById("Reset-DEVform")
   .addEventListener("submit", function () {
-    localStorage.clear("users");
-
-    users = JSON.parse(localStorage.getItem("users") || "[]");
-    let user = new DevUser(
-      "Administrator",
-      "Profile",
-      "Admin",
-      "1234",
-      "admin"
-    );
-    users.push(user);
-    user = new DevUser("Tiaan", "De Beer", "T-deBeer", "577088", "developer");
-    users.push(user);
-    user = new DevUser(
-      "Hardus",
-      "Lotter",
-      "HardusLotter",
-      "578559",
-      "developer"
-    );
-    users.push(user);
-    user = new DevUser("Jaco", "Mathee", "timejunky1", "578381", "developer");
-    users.push(user);
-    user = new DevUser(
-      "Tobias",
-      "van Schalkwyk",
-      "Rat3l",
-      "578552",
-      "developer"
-    );
-    users.push(user);
-
-    localStorage.setItem("users", JSON.stringify(users));
+    location.reload();
   });
 
 //Close the add dev modal
