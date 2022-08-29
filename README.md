@@ -4,13 +4,11 @@ WPR281
 Team: BreakingBad
 
 Section Allocation:
-1) Login system         => Hardus    NotDone      1
-2) Admin Hub            => ?         NotDone      1
-3) Solution Summary     => Jaco      NotDone      1
-4) Bug Ticket Creator   => Tiaan     NotDone      1
-5) On Load:             => Almal     NotDone      2
+1) Login system         => Hardus   
+2) Admin Hub            => TiaanDB & Tiaan
+3) Solution Summary     => Jaco    
+4) Bug Ticket Creator   => TiaanDB 
+5) On Load:             => All
 
-Deu Date: Monday 29 August 
-
-Commit Slegs as dit werk
+Due Date: Monday 29 August 
 
