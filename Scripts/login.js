@@ -47,10 +47,12 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
     let surname = document.getElementById("surname").value;
     let password = document.getElementById("pass").value;
     let confirmPassword = document.getElementById("conf-pass").value;
-
+    let users = JSON.parse(localStorage.getItem("users"));
     if (confirmPassword==password)
   {
-    users.push(new User(name,surname,username, password));
+    let user= (new User(name,surname,username, password, "developer"));
+    users.push(user);
+    localStorage.setItem("users", JSON.stringify(users) || "[]" );
     e.preventDefault();
   }
   else{
