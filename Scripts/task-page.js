@@ -369,7 +369,65 @@ function logOut() {
 
 document.getElementById("projects").addEventListener("change", function () {
   let selection = document.getElementById("projects").value;
+  localStorage.setItem("currProject", selection);
+  let title = document.getElementById("view-proj");
   title.innerText = "Viewing " + selection;
+
+  let unresolved = document.getElementById("unresolved");
+  let resolved = document.getElementById("completed");
+  let proccessing = document.getElementById("proccessing");
+
+  unresolved.innerHTML = "<h2>UNRESOLVED</h2>";
+  resolved.innerHTML = "<h2>RESOLVED</h2>";
+  proccessing.innerHTML = "<h2>PROCCESSING</h2>";
+
+  let projs = JSON.parse(localStorage.getItem("projects") || "[]");
+
+  for (let i = 0; i < projs.length; i++) {
+    if (projs[i].name == selection) {
+      for (let k = 0; k < projs[i].bugs.length; k++) {
+        let section = document.getElementById(projs[i].bugs[k].status);
+        let div = document.createElement("div");
+        let h3 = document.createElement("h3");
+        let p = document.createElement("p");
+        let type = document.createElement("p");
+        let button = document.createElement("button");
+
+        div.id = "bug-" + k;
+        div.draggable = true;
+        div.classList.add("bug-item");
+        div.addEventListener("dragstart", function (ev) {
+          ev.dataTransfer.setData("text", ev.target.id);
+        });
+
+        h3.innerText = div.id + ": " + projs[i].bugs[k].title;
+        type.innerText = projs[i].bugs[k].type.toUpperCase();
+        type.style.fontWeight = "bold";
+        p.innerText = projs[i].bugs[k].description;
+
+        button.type = "button";
+        button.classList.add("edit-button");
+        button.id = "bug-edit-" + k;
+        button.innerText = "Edit";
+
+        console.log(new Date(projs[i].bugs[k].dueDate).addDays(-2));
+
+        if (new Date() >= new Date(projs[i].bugs[k].dueDate)) {
+          div.style.border = "0.25rem solid red";
+        } else if (
+          new Date() <= new Date(projs[i].bugs[k].dueDate) &&
+          new Date() >= new Date(projs[i].bugs[k].dueDate).addDays(-2)
+        ) {
+          div.style.border = "0.25rem solid orange";
+        } else {
+          div.style.border = "0.25rem solid lightgreen";
+        }
+
+        div.append(h3, type, p, button);
+        section.appendChild(div);
+      }
+    }
+  }
 });
 
 document.getElementById("create-ticket").addEventListener("click", function () {
@@ -470,7 +528,7 @@ window.addEventListener("click", function (event) {
 });
 
 //When the modal form is submitted
-document.getElementById("edit-form").addEventListener("submit", function () {
+document.getElementById("edit-form").addEventListener("submit", function (ev) {
   let button = document.getElementById("modal-button");
 
   if (button.innerText === "Edit") {
@@ -511,7 +569,7 @@ document.getElementById("edit-form").addEventListener("submit", function () {
     }
   } else {
     for (let i = 0; i < projects.length; i++) {
-      if (title.innerText.includes(projects[i].projName)) {
+      if (title.innerText.includes(projects[i].name)) {
         const radioButtons = document.querySelectorAll('input[name="type"]');
 
         let selectedType;
@@ -542,6 +600,7 @@ document.getElementById("edit-form").addEventListener("submit", function () {
 
         projects[i].bugs.push(ticket);
         localStorage.setItem("projects", JSON.stringify(projects));
+        document.getElementById("projects").value = projects[i].name;
       }
     }
   }

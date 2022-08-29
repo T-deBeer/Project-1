@@ -111,6 +111,7 @@ window.onload = function () {
     let selection = document.getElementById("projects").value;
     let currentUser = localStorage.getItem("currentUser");
     let comboBox = document.getElementById("projects");
+    let linkedProjects = [];
 
     let projs = JSON.parse(localStorage.getItem("projects") || "[]");
 
@@ -134,51 +135,74 @@ window.onload = function () {
             option.selected = true;
             title.innerText = "Viewing " + option.value;
           }
+          linkedProjects.push(option.value);
           comboBox.appendChild(option);
           //ends
 
-          //loads bugs into the fields by status
-          for (let k = 0; k < projs[i].bugs.length; k++) {
-            let section = document.getElementById(projs[i].bugs[k].status);
-            let div = document.createElement("div");
-            let h3 = document.createElement("h3");
-            let p = document.createElement("p");
-            let type = document.createElement("p");
-            let button = document.createElement("button");
-
-            div.id = "bug-" + k;
-            div.draggable = true;
-            div.classList.add("bug-item");
-            div.addEventListener("dragstart", function (ev) {
-              ev.dataTransfer.setData("text", ev.target.id);
-            });
-
-            h3.innerText = div.id + ": " + projs[i].bugs[k].title;
-            type.innerText = projs[i].bugs[k].type.toUpperCase();
-            type.style.fontWeight = "bold";
-            p.innerText = projs[i].bugs[k].description;
-
-            button.type = "button";
-            button.classList.add("edit-button");
-            button.id = "bug-edit-" + k;
-            button.innerText = "Edit";
-
-            console.log(new Date(projs[i].bugs[k].dueDate).addDays(-2));
-
-            if (new Date() >= new Date(projs[i].bugs[k].dueDate)) {
-              div.style.border = "0.25rem solid red";
-            } else if (
-              new Date() <= new Date(projs[i].bugs[k].dueDate) &&
-              new Date() >= new Date(projs[i].bugs[k].dueDate).addDays(-2)
-            ) {
-              div.style.border = "0.25rem solid orange";
-            } else {
-              div.style.border = "0.25rem solid lightgreen";
-            }
-
-            div.append(h3, type, p, button);
-            section.appendChild(div);
+          let currProj = localStorage.getItem("currProject");
+          if (currProj != null && linkedProjects.includes(currProj)) {
+            document.getElementById("projects").value = currProj;
+            title.innerText = "Viewing " + currProj;
+          } else {
+            currProj = option.value;
+            localStorage.getItem("currProject", currProj);
+            title.innerText = "Viewing " + currProj;
           }
+
+          let unresolved = document.getElementById("unresolved");
+          let resolved = document.getElementById("completed");
+          let proccessing = document.getElementById("proccessing");
+
+          unresolved.innerHTML = "<h2>UNRESOLVED</h2>";
+          resolved.innerHTML = "<h2>RESOLVED</h2>";
+          proccessing.innerHTML = "<h2>PROCCESSING</h2>";
+          //loads bugs into the fields by status
+          for (let i = 0; i < projs.length; i++) {
+            if (projs[i].name == currProj) {
+              for (let k = 0; k < projs[i].bugs.length; k++) {
+                let section = document.getElementById(projs[i].bugs[k].status);
+                let div = document.createElement("div");
+                let h3 = document.createElement("h3");
+                let p = document.createElement("p");
+                let type = document.createElement("p");
+                let button = document.createElement("button");
+
+                div.id = "bug-" + k;
+                div.draggable = true;
+                div.classList.add("bug-item");
+                div.addEventListener("dragstart", function (ev) {
+                  ev.dataTransfer.setData("text", ev.target.id);
+                });
+
+                h3.innerText = div.id + ": " + projs[i].bugs[k].title;
+                type.innerText = projs[i].bugs[k].type.toUpperCase();
+                type.style.fontWeight = "bold";
+                p.innerText = projs[i].bugs[k].description;
+
+                button.type = "button";
+                button.classList.add("edit-button");
+                button.id = "bug-edit-" + k;
+                button.innerText = "Edit";
+
+                console.log(new Date(projs[i].bugs[k].dueDate).addDays(-2));
+
+                if (new Date() >= new Date(projs[i].bugs[k].dueDate)) {
+                  div.style.border = "0.25rem solid red";
+                } else if (
+                  new Date() <= new Date(projs[i].bugs[k].dueDate) &&
+                  new Date() >= new Date(projs[i].bugs[k].dueDate).addDays(-2)
+                ) {
+                  div.style.border = "0.25rem solid orange";
+                } else {
+                  div.style.border = "0.25rem solid lightgreen";
+                }
+
+                div.append(h3, type, p, button);
+                section.appendChild(div);
+              }
+            }
+          }
+
           //ends
         }
       }

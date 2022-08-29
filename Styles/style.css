@@ -79,7 +79,7 @@ form input:hover {
     border: 1px solid var(--main);
 }
 
-#progressbar{
+#progressbar {
 
     grid-gap: 0rem;
     background-color: var(--dark);
@@ -89,11 +89,11 @@ form input:hover {
     border-style: solid;
     border-color: var(--dark);
     border-radius: 13px;
-    transition: 0.5s ;
+    transition: 0.5s;
     cursor: pointer;
 }
 
-#progress{
+#progress {
     border-radius: 13px;
     height: 20px;
     width: auto;
@@ -101,7 +101,7 @@ form input:hover {
     padding: 0;
 }
 
-.progress{
+.progress {
     border-radius: 13px;
     height: 20px;
     width: auto;
@@ -111,17 +111,17 @@ form input:hover {
 
 
 
-#progressUnresolved{
+#progressUnresolved {
     background-color: var(--main);
 }
 
-#progressProccessing{
+#progressProccessing {
     background-color: var(--white);
     margin-left: -4px;
 }
 
 
-#progressResolved{
+#progressResolved {
     background-color: var(--light);
     margin-left: -4px;
 }
@@ -353,6 +353,22 @@ form button:hover {
     padding: 0;
 }
 
+#add-proj-form {
+    padding: 0;
+}
+
+#edit-DEVform {
+    padding: 0;
+}
+
+#Remove-DEVform {
+    padding: 0;
+}
+
+#Reset-DEVform {
+    padding: 0;
+}
+
 .modal-content {
     background-color: var(--white);
     margin: auto;
@@ -514,6 +530,11 @@ form button:hover {
     margin: 0 0.5rem 0 auto;
 }
 
+.search input::placeholder {
+    color: var(--main);
+    opacity: 1;
+}
+
 .search input:hover {
     border-radius: 1.5rem;
     border: 1px solid var(--main);
@@ -570,4 +591,28 @@ td:first-child {
 
 td:last-child {
     border-right: none;
+}
+
+#list-of-devs {
+    text-align: center;
+    width: 80%;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    background-color: transparent;
+    appearance: none;
+    color: var(--light);
+    border-top: 1px solid var(--white);
+    border-left: 1px solid var(--white);
+    border-right: 1px solid var(--white);
+    border-bottom: 1px solid var(--light);
+}
+
+#list-of-devs:hover {
+    appearance: var(--dark);
+    font-size: large;
+    font-weight: bold;
+}
+
+#devs-container {
+    background-color: #000;
 }
