@@ -650,6 +650,59 @@ document.getElementById("dev-search").addEventListener("input", function () {
     }
   }
 });
+
+document
+  .getElementById("project-search")
+  .addEventListener("input", function () {
+    let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+    let searchField = document.getElementById("project-search");
+
+    let elmtTable = document.getElementById("project-table");
+    let tableRows = elmtTable.getElementsByTagName("tr");
+    let rowCount = tableRows.length;
+
+    for (let x = rowCount - 1; x > 0; x--) {
+      elmtTable.removeChild(tableRows[x]);
+    }
+
+    for (let project of projects) {
+      if (
+        project.name.toLowerCase().includes(searchField.value.toLowerCase())
+      ) {
+        let tr = document.createElement("tr");
+        let name = document.createElement("td");
+        let numberOfDevs = document.createElement("td");
+        let numberOfBugs = document.createElement("td");
+        let percentage = document.createElement("td");
+
+        name.innerText = project.name;
+
+        for (let dev of project.devs) {
+          for (let user of users) {
+            if (user.username == dev) {
+              numberOfDevs.innerHTML +=
+                user.firstname + " " + user.lastname + "<br>";
+            }
+          }
+        }
+
+        let count = 0;
+        for (let bug of project.bugs) {
+          if (bug.status == "completed") {
+            count++;
+          }
+        }
+        percentage.innerText =
+          ((count / project.bugs.length) * 100).toFixed(2) + "%";
+
+        numberOfBugs.innerText = project.bugs.length - count;
+
+        tr.append(name, numberOfDevs, numberOfBugs, percentage);
+        document.getElementById("project-table").appendChild(tr);
+      }
+    }
+  });
 //SEARCH LISTENER ENDS
 
 //formats the date to a readable format
@@ -668,3 +721,228 @@ function formatDate(dateEntered) {
 
   return year + "-" + month + "-" + day;
 }
+
+//ADD A PROJECTS
+function openProjectModal() {
+  let modal = document.getElementById("project-modal");
+
+  modal.style.display = "block";
+  let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+  for (let user of users) {
+    if (user.auth == "developer") {
+      let option = document.createElement("option");
+      option.value = user.username;
+      option.innerText = user.firstname + " " + user.lastname;
+
+      document.getElementById("list-of-devs").appendChild(option);
+    }
+  }
+}
+
+document
+  .getElementById("close-project-modal")
+  .addEventListener("click", function () {
+    let modal = document.getElementById("project-modal");
+
+    document.getElementById("modal-devs").value = "";
+
+    $("#list-of-devs").find("option").remove().end();
+    modal.style.display = "none";
+  });
+
+document.getElementById("list-of-devs").addEventListener("change", function () {
+  let select = document.getElementById("list-of-devs");
+
+  if (!document.getElementById("modal-devs").value.includes(select.value)) {
+    if (document.getElementById("modal-devs").value != "") {
+      document.getElementById("modal-devs").value += "," + select.value;
+    } else {
+      document.getElementById("modal-devs").value += select.value;
+    }
+  } else {
+    alert("Developer already added to the list");
+  }
+});
+
+window.addEventListener("click", function (e) {
+  let projModal = document.getElementById("project-modal");
+  if (e.target == projModal) {
+    projModal.style.display = "none";
+  }
+});
+
+document
+  .getElementById("modal-proj-name")
+  .addEventListener("input", function () {
+    let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+    for (let project of projects) {
+      if (project.name == document.getElementById("modal-proj-name").value) {
+        document.getElementById("modal-proj-name").style.border =
+          "0.2rem solid red";
+      } else {
+        document.getElementById("modal-proj-name").style.border =
+          "1px outset var(--light)";
+      }
+    }
+  });
+class Project {
+  constructor(projName, projDevs, bugs) {
+    this.name = projName;
+    this.devs = projDevs;
+    this.bugs = bugs;
+  }
+}
+document
+  .getElementById("add-proj-form")
+  .addEventListener("submit", function () {
+    let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+    let create = true;
+
+    for (let project of projects) {
+      if (project.name == document.getElementById("modal-proj-name").value) {
+        alert("Project already exists projects require a unit name");
+        create = false;
+      }
+    }
+
+    try {
+      if (create) {
+        let project = new Project(
+          document.getElementById("modal-proj-name").value,
+          document.getElementById("modal-devs").value.split(","),
+          []
+        );
+
+        projects.push(project);
+        console.log(projects);
+        localStorage.setItem("projects", JSON.stringify(projects));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  });
+//Add projects ends
+
+//Project sort function
+function sortProjectsByUnresolved() {
+  let elmtTable = document.getElementById("project-table");
+  let tableRows = elmtTable.getElementsByTagName("tr");
+  let rowCount = tableRows.length;
+
+  for (let x = rowCount - 1; x > 0; x--) {
+    elmtTable.removeChild(tableRows[x]);
+  }
+
+  let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+  let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+  let sortedProjects = [];
+  let devs = "";
+  let percent = 0;
+  let totalBugs = 0;
+  for (let project of projects) {
+    for (let dev of project.devs) {
+      for (let user of users) {
+        if (user.username == dev) {
+          devs += user.firstname + " " + user.lastname + "<br>";
+        }
+      }
+    }
+    let count = 0;
+    for (let bug of project.bugs) {
+      if (bug.status == "completed") {
+        count++;
+      }
+    }
+    percent = ((count / project.bugs.length) * 100).toFixed(2) + "%";
+
+    totalBugs = project.bugs.length - count;
+    let tableInfo = {
+      name: project.name,
+      devs: devs,
+      unresolvedBugs: totalBugs,
+      percentComplete: percent,
+    };
+    sortedProjects.push(tableInfo);
+    devs = "";
+  }
+  sortedProjects.sort((a, b) => b.unresolvedBugs - a.unresolvedBugs);
+  console.log(sortedProjects);
+  for (let proj of sortedProjects) {
+    let tr = document.createElement("tr");
+    let name = document.createElement("td");
+    let numberOfDevs = document.createElement("td");
+    let numberOfBugs = document.createElement("td");
+    let percentage = document.createElement("td");
+
+    name.innerText = proj.name;
+    numberOfDevs.innerHTML = proj.devs;
+    numberOfBugs.innerText = proj.unresolvedBugs;
+    percentage.innerText = proj.percentComplete;
+    console.log(numberOfDevs.innerHTML);
+    tr.append(name, numberOfDevs, numberOfBugs, percentage);
+    document.getElementById("project-table").appendChild(tr);
+  }
+}
+
+function sortProjectsByPercentage() {
+  let elmtTable = document.getElementById("project-table");
+  let tableRows = elmtTable.getElementsByTagName("tr");
+  let rowCount = tableRows.length;
+
+  for (let x = rowCount - 1; x > 0; x--) {
+    elmtTable.removeChild(tableRows[x]);
+  }
+
+  let projects = JSON.parse(localStorage.getItem("projects") || "[]");
+  let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+  let sortedProjects = [];
+  let devs = "";
+  let percent = 0;
+  let totalBugs = 0;
+  for (let project of projects) {
+    for (let dev of project.devs) {
+      for (let user of users) {
+        if (user.username == dev) {
+          devs += user.firstname + " " + user.lastname + "<br>";
+        }
+      }
+    }
+    let count = 0;
+    for (let bug of project.bugs) {
+      if (bug.status == "completed") {
+        count++;
+      }
+    }
+    percent = ((count / project.bugs.length) * 100).toFixed(2);
+
+    totalBugs = project.bugs.length - count;
+    let tableInfo = {
+      name: project.name,
+      devs: devs,
+      unresolvedBugs: totalBugs,
+      percentComplete: percent,
+    };
+    sortedProjects.push(tableInfo);
+    devs = "";
+  }
+  sortedProjects.sort((a, b) => b.percentComplete - a.percentComplete);
+  for (let proj of sortedProjects) {
+    let tr = document.createElement("tr");
+    let name = document.createElement("td");
+    let numberOfDevs = document.createElement("td");
+    let numberOfBugs = document.createElement("td");
+    let percentage = document.createElement("td");
+
+    name.innerText = proj.name;
+    numberOfDevs.innerHTML = proj.devs;
+    numberOfBugs.innerText = proj.unresolvedBugs;
+    percentage.innerText = proj.percentComplete + "%";
+    console.log(numberOfDevs.innerHTML);
+    tr.append(name, numberOfDevs, numberOfBugs, percentage);
+    document.getElementById("project-table").appendChild(tr);
+  }
+}
+//project sort functions ends

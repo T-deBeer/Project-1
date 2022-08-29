@@ -83,37 +83,23 @@
     </div>
     <div class="modal" id="project-modal">
         <div class="modal-content">
-            <span class="close" id="close-modal">&times;</span>
+            <span class="close" id="close-project-modal">&times;</span>
             <h3 id="modal-title">ADD A PROJECT</h3>
-            <form id="add-dev-form">
+            <form id="add-proj-form">
                 <div class="modal-div">
-                    <label for="tile">Title:</label>
-                    <input name="title" id="modal-bug-title" type="text" placeholder="Title" required>
-                </div>
-                <div class="modal-div modal-radio">
-                    <label for="bug">BUG</label>
-                    <input id="modal-bug-radio-bug" type="radio" id="bug" value="bug" name="type" required>
-                    <label for="fr">FEATURE REQUEST</label>
-                    <input id="modal-bug-radio-feature-request" type="radio" id="fr" value="feature request" name="type"
-                        onclick="featureReq()" required>
+                    <label for="tile">Project Name:</label>
+                    <input name="title" id="modal-proj-name" type="text" placeholder="Project Name" required>
                 </div>
                 <div class="modal-div">
-                    <label for="desc">Description:</label>
-                    <input name="desc" id="modal-bug-description" type="text" placeholder="Description" required>
+                    <label for="devs">Developers:</label>
+                    <input name="devs" id="modal-devs" type="text" readonly required>
                 </div>
                 <div class="modal-div">
-                    <label for="dueDate">Due Date:</label>
-                    <input name="dueDate" id="modal-bug-due" type="date" placeholder="Due Date" required>
-                </div>
-                <div class="modal-div">
-                    <select name="status" id="bug-status">
-                        <option value="unresolved">UNRESOLVED</option>
-                        <option value="proccessing">PROCCESSING</option>
-                        <option value="completed">COMPLETED</option>
+                    <select name="status" id="list-of-devs">
                     </select>
                 </div>
                 <div class="modal-div">
-                    <button type="submit" id="modal-button">Edit</button>
+                    <button type="submit" id="modal-button">Add Project</button>
                 </div>
             </form>
         </div>
@@ -187,7 +173,7 @@
                 </div>
             </div>
             <div class="projects" id="projects-section">
-                <h3>TICKET INFORMATION</h3>
+                <h3>PROJECT INFORMATION</h3>
                 <div class="table-container">
                     <table id="project-table">
                         <tr>
@@ -204,14 +190,15 @@
                         <button>Search</button>
                     </div>
                     <div class="filter-buttons">
-                        <button>Create Project</button>
-                        <button>Sort by Bugs</button>
-                        <button>Sort By Percentage</button>
+                        <button onclick="openProjectModal()">Create Project</button>
+                        <button onclick="sortProjectsByUnresolved()">Sort Projects by Unresolved Bugs</button>
+                        <button onclick="sortProjectsByPercentage()">Sort By Percentage Resolved</button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
         <script type="module" src="../Scripts/main.js"></script>
         <script src="../Scripts/admin-hub.js"></script>
 </body>
