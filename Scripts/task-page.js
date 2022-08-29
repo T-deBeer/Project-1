@@ -616,6 +616,7 @@ document.getElementById("edit-form").addEventListener("submit", function (ev) {
 
         //Stores updated bugs
         localStorage.setItem("projects", JSON.stringify(projects));
+        Progressbar.loadprogressBar();
       }
     }
   } else {
@@ -651,6 +652,8 @@ document.getElementById("edit-form").addEventListener("submit", function (ev) {
 
         projects[i].bugs.push(ticket);
         localStorage.setItem("projects", JSON.stringify(projects));
+        Progressbar.loadprogressBar();
+
         document.getElementById("projects").value = projects[i].name;
       }
     }
