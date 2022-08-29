@@ -357,6 +357,18 @@ form button:hover {
     padding: 0;
 }
 
+#edit-DEVform {
+    padding: 0;
+}
+
+#Remove-DEVform {
+    padding: 0;
+}
+
+#Reset-DEVform {
+    padding: 0;
+}
+
 .modal-content {
     background-color: var(--white);
     margin: auto;
@@ -516,6 +528,11 @@ form button:hover {
     background-color: transparent;
     color: var(--white);
     margin: 0 0.5rem 0 auto;
+}
+
+.search input::placeholder {
+    color: var(--main);
+    opacity: 1;
 }
 
 .search input:hover {
