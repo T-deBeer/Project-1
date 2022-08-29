@@ -81,6 +81,43 @@
             </form>
         </div>
     </div>
+    <div class="modal" id="project-modal">
+        <div class="modal-content">
+            <span class="close" id="close-modal">&times;</span>
+            <h3 id="modal-title">ADD A PROJECT</h3>
+            <form id="add-dev-form">
+                <div class="modal-div">
+                    <label for="tile">Title:</label>
+                    <input name="title" id="modal-bug-title" type="text" placeholder="Title" required>
+                </div>
+                <div class="modal-div modal-radio">
+                    <label for="bug">BUG</label>
+                    <input id="modal-bug-radio-bug" type="radio" id="bug" value="bug" name="type" required>
+                    <label for="fr">FEATURE REQUEST</label>
+                    <input id="modal-bug-radio-feature-request" type="radio" id="fr" value="feature request" name="type"
+                        onclick="featureReq()" required>
+                </div>
+                <div class="modal-div">
+                    <label for="desc">Description:</label>
+                    <input name="desc" id="modal-bug-description" type="text" placeholder="Description" required>
+                </div>
+                <div class="modal-div">
+                    <label for="dueDate">Due Date:</label>
+                    <input name="dueDate" id="modal-bug-due" type="date" placeholder="Due Date" required>
+                </div>
+                <div class="modal-div">
+                    <select name="status" id="bug-status">
+                        <option value="unresolved">UNRESOLVED</option>
+                        <option value="proccessing">PROCCESSING</option>
+                        <option value="completed">COMPLETED</option>
+                    </select>
+                </div>
+                <div class="modal-div">
+                    <button type="submit" id="modal-button">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <div class="hub">
         <div class="user">
             <h2 id="current-admin">User</h2>
